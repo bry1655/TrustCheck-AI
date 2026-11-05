@@ -615,11 +615,10 @@ renderHistory();
     list.textContent = "Loading approved warnings...";
 
     const { data, error } = await db
-      .from("community_reports")
-      .select("id,category,description,created_at")
-      .eq("status", "approved")
-      .order("created_at", { ascending: false })
-      .limit(30);
+  .from("community_warnings")
+  .select("id,category,description,created_at")
+  .order("created_at", { ascending: false })
+  .limit(30);
 
     if (error) {
       list.textContent = "Unable to load warnings. Please try again.";
