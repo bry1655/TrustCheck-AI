@@ -159,6 +159,35 @@ h1, h2 {
     transition: none !important;
   }
 }
+    /* VISIBLE TRUSTCHECK ANIMATION */
+.hero::after {
+  content: "🛡️";
+  display: block;
+  font-size: 76px;
+  margin: 20px auto;
+  width: 120px;
+  height: 120px;
+  line-height: 120px;
+  border-radius: 50%;
+  background: rgba(36,214,154,.12);
+  box-shadow: 0 0 35px rgba(36,214,154,.35);
+  animation: shieldFloat 2.5s ease-in-out infinite;
+}
+
+@keyframes shieldFloat {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 0 20px rgba(36,214,154,.25);
+  }
+  50% {
+    transform: translateY(-14px) scale(1.08);
+    box-shadow: 0 0 50px rgba(36,214,154,.65);
+  }
+}
+
+.hero::before {
+  animation: trustGlow 3s ease-in-out infinite alternate;
+}
   </style>
 </head>
 <body>
