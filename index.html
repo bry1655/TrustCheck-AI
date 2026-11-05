@@ -360,6 +360,76 @@
     li.textContent = text;
     list.appendChild(li);
   }
+  /* TRUSTCHECK KENYA - PREMIUM ANIMATIONS */
+body {
+  background:
+    radial-gradient(circle at 15% 15%, rgba(16,185,129,.13), transparent 35%),
+    radial-gradient(circle at 85% 65%, rgba(20,184,166,.10), transparent 35%),
+    #071321;
+  background-attachment: fixed;
+}
+
+header, .hero, section, .card, .panel, .feature-card {
+  animation: trustFade 1s ease both;
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: rgba(16,185,129,.13);
+  filter: blur(65px);
+  top: -90px;
+  right: -70px;
+  animation: trustGlow 5s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+button {
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(16,185,129,.25);
+}
+
+.card, .panel, .feature-card {
+  transition: transform .3s ease, border-color .3s ease;
+}
+
+.card:hover, .panel:hover, .feature-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(16,185,129,.5);
+}
+
+h1, h2 {
+  letter-spacing: -.5px;
+}
+
+@keyframes trustFade {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes trustGlow {
+  from { transform: scale(.85); opacity: .5; }
+  to { transform: scale(1.2); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
 </script>
 </body>
 </html>
