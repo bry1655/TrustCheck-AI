@@ -519,6 +519,329 @@ renderHistory();
     or OTP with anyone.
   </p>
 </section>
+  <!-- TRUSTCHECK COMMUNITY WATCH -->
+<section id="community-watch" style="padding:35px 16px;background:#101827;color:#fff;font-family:Arial,sans-serif;">
+  <div style="max-width:850px;margin:auto;">
+    <h2>🛡️ TrustCheck Community Watch</h2>
+    <p>Share suspicious messages and help other Kenyans recognise possible scams.</p>
+
+    <div style="background:#1d293b;padding:20px;border-radius:14px;margin:20px 0;">
+      <h3>Report something suspicious</h3>
+      <form id="tc-report-form">
+        <label>Scam category</label>
+        <select id="tc-category" required style="width:100%;padding:12px;margin:8px 0 15px;">
+          <option value="">Choose category</option>
+          <option value="mpesa">M-Pesa / Mobile money</option>
+          <option value="job">Job / Online earning</option>
+          <option value="online_shop">Online shop</option>
+          <option value="phishing">Suspicious link / Phishing</option>
+          <option value="investment">Investment</option>
+          <option value="other">Other</option>
+        </select>
+
+        <label>Describe what happened</label>
+        <textarea id="tc-description" required minlength="10" maxlength="5000"
+          placeholder="Describe the suspicious message or experience. Do not include passwords, PINs, OTPs or private information."
+          style="width:100%;min-height:120px;padding:12px;margin:8px 0 15px;box-sizing:border-box;"></textarea>
+
+        <label>Suspicious phone number (optional)</label>
+        <input id="tc-phone" maxlength="30" placeholder="Optional"
+          style="width:100%;padding:12px;margin:8px 0 15px;box-sizing:border-box;">
+
+        <label>Suspicious website link (optional)</label>
+        <input id="tc-link" type="url" maxlength="500" placeholder="https://example.com"
+          style="width:100%;padding:12px;margin:8px 0 15px;box-sizing:border-box;">
+
+        <p style="font-size:12px;color:#bdc8d8;">
+          Reports are reviewed before publication. Do not submit anyone's private information.
+        </p>
+        <button type="submit" style="padding:13px 20px;background:#16a085;color:white;border:0;border-radius:8px;font-weight:bold;">
+          Submit report
+        </button>
+        <p id="tc-submit-status" role="status"></p>
+      </form>
+    </div>
+
+    <div style="background:#1d293b;padding:20px;border-radius:14px;margin:20px 0;">
+      <h3>Community warnings</h3>
+      <p>Reports approved by a moderator appear here.</p>
+      <button id="tc-refresh" type="button">Refresh warnings</button>
+      <div id="tc-approved-list" style="margin-top:15px;">Loading reports...</div>
+    </div>
+
+    <div style="background:#1d293b;padding:20px;border-radius:14px;margin:20px 0;">
+      <h3>Administrator review</h3>
+      <p>Sign in with your TrustCheck administrator account to review submissions.</p>
+
+      <form id="tc-admin-login">
+        <input id="tc-admin-email" type="email" required placeholder="Administrator email"
+          autocomplete="username" style="width:100%;padding:12px;margin:8px 0;box-sizing:border-box;">
+        <input id="tc-admin-password" type="password" required placeholder="Password"
+          autocomplete="current-password" style="width:100%;padding:12px;margin:8px 0;box-sizing:border-box;">
+        <button type="submit" style="padding:12px 18px;background:#2878d0;color:white;border:0;border-radius:8px;">
+          Administrator sign in
+        </button>
+      </form>
+
+      <p id="tc-admin-status" role="status"></p>
+      <button id="tc-admin-logout" type="button" hidden>Sign out</button>
+      <div id="tc-pending-list"></div>
+    </div>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(() => {
+  const SUPABASE_URL = "https://ktqpjkxbrgtobqwmorkl.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_1e6pcjBpG6XJcGIyf6bHvg_f_BfXl2o";
+
+  if (!window.supabase) {
+    document.getElementById("tc-submit-status").textContent =
+      "Connection library could not load. Please refresh the page.";
+    return;
+  }
+
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const el = id => document.getElementById(id);
+  const safeText = value => String(value || "");
+
+  function showMessage(id, message) {
+    el(id).textContent = message;
+  }
+
+  async function loadApprovedReports() {
+    const list = el("tc-approved-list");
+    list.textContent = "Loading approved warnings...";
+
+    const { data, error } = await db
+      .from("community_reports")
+      .select("id,category,description,created_at")
+      .eq("status", "approved")
+      .order("created_at", { ascending: false })
+      .limit(30);
+
+    if (error) {
+      list.textContent = "Unable to load warnings. Please try again.";
+      return;
+    }
+
+    list.replaceChildren();
+
+    if (!data || data.length === 0) {
+      list.textContent = "No approved community warnings yet.";
+      return;
+    }
+
+    data.forEach(report => {
+      const card = document.createElement("article");
+      card.style.cssText =
+        "padding:14px;margin:12px 0;background:#26364b;border-radius:10px;";
+
+      const heading = document.createElement("strong");
+      heading.textContent = report.category.replace("_", " ").toUpperCase();
+
+      const description = document.createElement("p");
+      description.textContent = report.description;
+
+      const date = document.createElement("small");
+      date.textContent = new Date(report.created_at).toLocaleDateString();
+
+      card.append(heading, description, date);
+      list.appendChild(card);
+    });
+  }
+
+  el("tc-report-form").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const button = event.submitter;
+    button.disabled = true;
+    showMessage("tc-submit-status", "Submitting your report...");
+
+    const report = {
+      category: el("tc-category").value,
+      description: el("tc-description").value.trim(),
+      suspicious_phone: el("tc-phone").value.trim() || null,
+      suspicious_link: el("tc-link").value.trim() || null,
+      status: "pending"
+    };
+
+    if (report.description.length < 10) {
+      showMessage("tc-submit-status", "Please provide at least 10 characters.");
+      button.disabled = false;
+      return;
+    }
+
+    const { error } = await db.from("community_reports").insert(report);
+
+    if (error) {
+      showMessage("tc-submit-status", "Report submission failed. Please try again.");
+    } else {
+      el("tc-report-form").reset();
+      showMessage("tc-submit-status",
+        "Report received. It is awaiting administrator review.");
+    }
+
+    button.disabled = false;
+  });
+
+  async function loadPendingReports() {
+    const list = el("tc-pending-list");
+    list.textContent = "Loading pending reports...";
+
+    const { data, error } = await db
+      .from("community_reports")
+      .select("id,category,description,suspicious_phone,suspicious_link,created_at")
+      .eq("status", "pending")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      list.textContent = "Could not load reports.";
+      return;
+    }
+
+    list.replaceChildren();
+
+    if (!data || data.length === 0) {
+      list.textContent = "No pending reports.";
+      return;
+    }
+
+    data.forEach(report => {
+      const card = document.createElement("div");
+      card.style.cssText =
+        "padding:15px;margin:14px 0;background:#26364b;border-radius:10px;";
+
+      const heading = document.createElement("h4");
+      heading.textContent = report.category.toUpperCase();
+
+      const details = document.createElement("p");
+      details.textContent =
+        "Submitted description: " + report.description +
+        "\nPhone: " + (report.suspicious_phone || "Not provided") +
+        "\nLink: " + (report.suspicious_link || "Not provided");
+
+      const edit = document.createElement("textarea");
+      edit.value = report.description;
+      edit.maxLength = 5000;
+      edit.style.cssText =
+        "width:100%;min-height:100px;padding:10px;box-sizing:border-box;";
+
+      const approve = document.createElement("button");
+      approve.textContent = "Save edited warning & approve";
+      approve.style.cssText =
+        "padding:10px;margin:8px 5px 5px 0;background:#16865c;color:white;border:0;border-radius:7px;";
+
+      const reject = document.createElement("button");
+      reject.textContent = "Reject report";
+      reject.style.cssText =
+        "padding:10px;margin:8px 0;background:#a33;color:white;border:0;border-radius:7px;";
+
+      approve.addEventListener("click", async () => {
+        const cleaned = edit.value.trim();
+        if (cleaned.length < 10) {
+          alert("The edited warning must contain at least 10 characters.");
+          return;
+        }
+
+        approve.disabled = true;
+        const { error } = await db.from("community_reports")
+          .update({
+            description: cleaned,
+            suspicious_phone: null,
+            suspicious_link: null,
+            status: "approved"
+          })
+          .eq("id", report.id)
+          .eq("status", "pending");
+
+        if (error) {
+          alert("Approval failed. Please try again.");
+          approve.disabled = false;
+          return;
+        }
+
+        loadPendingReports();
+        loadApprovedReports();
+      });
+
+      reject.addEventListener("click", async () => {
+        if (!confirm("Reject this report?")) return;
+        reject.disabled = true;
+
+        const { error } = await db.from("community_reports")
+          .update({ status: "rejected" })
+          .eq("id", report.id)
+          .eq("status", "pending");
+
+        if (error) {
+          alert("Rejection failed. Please try again.");
+          reject.disabled = false;
+          return;
+        }
+
+        loadPendingReports();
+      });
+
+      card.append(heading, details, edit, approve, reject);
+      list.appendChild(card);
+    });
+  }
+
+  async function checkAdmin() {
+    const { data: { user } } = await db.auth.getUser();
+
+    if (!user) {
+      showMessage("tc-admin-status", "Please sign in.");
+      el("tc-pending-list").replaceChildren();
+      el("tc-admin-logout").hidden = true;
+      return;
+    }
+
+    const { data, error } = await db.rpc("is_trustcheck_admin");
+
+    if (error || data !== true) {
+      showMessage("tc-admin-status", "This account does not have administrator access.");
+      await db.auth.signOut();
+      return;
+    }
+
+    showMessage("tc-admin-status", "Administrator verified. Review reports below.");
+    el("tc-admin-logout").hidden = false;
+    await loadPendingReports();
+  }
+
+  el("tc-admin-login").addEventListener("submit", async event => {
+    event.preventDefault();
+    showMessage("tc-admin-status", "Signing in...");
+
+    const { error } = await db.auth.signInWithPassword({
+      email: el("tc-admin-email").value.trim(),
+      password: el("tc-admin-password").value
+    });
+
+    if (error) {
+      showMessage("tc-admin-status", "Sign-in failed. Check your details and try again.");
+      return;
+    }
+
+    el("tc-admin-password").value = "";
+    await checkAdmin();
+  });
+
+  el("tc-admin-logout").addEventListener("click", async () => {
+    await db.auth.signOut();
+    el("tc-pending-list").replaceChildren();
+    showMessage("tc-admin-status", "Signed out.");
+    el("tc-admin-logout").hidden = true;
+  });
+
+  el("tc-refresh").addEventListener("click", loadApprovedReports);
+
+  loadApprovedReports();
+})();
+</script>
 
 </body>
 </html>
