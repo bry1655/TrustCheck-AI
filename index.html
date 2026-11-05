@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +6,7 @@
 <meta name="theme-color" content="#071426">
 <title>TrustCheck Kenya | Digital Safety</title>
 <meta name="description" content="Assess suspicious messages, M-Pesa requests, jobs, online shops and links with TrustCheck Kenya.">
+
 <style>
 :root{
   --bg:#071426;--panel:#10233b;--panel2:#142b46;
@@ -16,81 +15,138 @@
   --red:#ff6574;--yellow:#ffc65c;--radius:19px;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);
-font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
-button,textarea,select{font:inherit}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif
+}
+button,textarea,select,input{font:inherit}
 button{cursor:pointer}
+a{word-break:break-word}
 .app{max-width:1250px;margin:auto;padding:20px}
-header{display:flex;align-items:center;justify-content:space-between;
-gap:15px;padding:12px 0 22px;border-bottom:1px solid var(--line)}
+header{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:15px;padding:12px 0 22px;border-bottom:1px solid var(--line)
+}
 .brand{display:flex;align-items:center;gap:12px}
-.logo{width:45px;height:45px;border-radius:14px;
-display:grid;place-items:center;background:linear-gradient(135deg,#1679d5,#24c6bd);
-font-size:24px}
+.logo{
+  width:45px;height:45px;border-radius:14px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,#1679d5,#24c6bd);
+  font-size:24px
+}
 .brand h1{font-size:18px;margin:0;letter-spacing:.4px}
 .brand p{font-size:11px;color:var(--muted);margin:4px 0 0}
 .header-actions{display:flex;gap:9px;align-items:center}
-.btn{border:1px solid var(--line);background:var(--panel2);
-color:var(--text);padding:10px 14px;border-radius:11px}
+.btn{
+  border:1px solid var(--line);background:var(--panel2);
+  color:var(--text);padding:10px 14px;border-radius:11px
+}
 .btn:hover{border-color:var(--blue)}
-.btn.primary{background:linear-gradient(110deg,#1678db,#16a9ba);
-border:0;font-weight:700}
+.btn.primary{
+  background:linear-gradient(110deg,#1678db,#16a9ba);
+  border:0;font-weight:700
+}
 .btn.danger{color:#ff9ca5}
+.btn:disabled{opacity:.6;cursor:not-allowed}
 .hero{padding:35px 0 25px}
-.eyebrow{color:var(--cyan);font-size:11px;font-weight:800;
-letter-spacing:2px}
-.hero h2{font-size:clamp(30px,5vw,48px);line-height:1.1;
-margin:12px 0;max-width:700px}
+.eyebrow{
+  color:var(--cyan);font-size:11px;font-weight:800;
+  letter-spacing:2px
+}
+.hero h2{
+  font-size:clamp(30px,5vw,48px);line-height:1.1;
+  margin:12px 0;max-width:700px
+}
 .hero h2 span{color:var(--cyan)}
 .hero p{color:var(--muted);max-width:650px;line-height:1.7}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:20px 0 28px}
-.stat,.card{background:var(--panel);border:1px solid var(--line);
-border-radius:var(--radius)}
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:13px;margin:20px 0 28px
+}
+.stat,.card{
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:var(--radius)
+}
 .stat{padding:17px}
 .stat strong{display:block;font-size:25px}
 .stat span{color:var(--muted);font-size:12px}
-.layout{display:grid;grid-template-columns: minmax(0,1.65fr) minmax(260px,.85fr);gap:18px}
+.layout{
+  display:grid;
+  grid-template-columns:minmax(0,1.65fr) minmax(260px,.85fr);
+  gap:18px
+}
 .card{padding:21px;margin-bottom:18px}
-.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.card-head{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;margin-bottom:16px
+}
 .card h3{font-size:17px;margin:0}
 .small{font-size:12px;color:var(--muted)}
-.categories{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.category{background:#0a1b30;border:1px solid var(--line);
-color:var(--text);border-radius:13px;padding:14px 10px;text-align:left;
-min-height:91px}
+.categories{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px
+}
+.category{
+  background:#0a1b30;border:1px solid var(--line);
+  color:var(--text);border-radius:13px;
+  padding:14px 10px;text-align:left;min-height:91px
+}
 .category.active{border-color:var(--cyan);background:#123348}
 .category .emoji{font-size:22px;display:block;margin-bottom:8px}
 .category b{font-size:12px;display:block}
 .category small{font-size:10px;color:var(--muted)}
-textarea{width:100%;min-height:155px;resize:vertical;
-background:#08182b;border:1px solid var(--line);border-radius:13px;
-padding:15px;color:var(--text);outline:none;line-height:1.6}
+textarea{
+  width:100%;min-height:155px;resize:vertical;
+  background:#08182b;border:1px solid var(--line);
+  border-radius:13px;padding:15px;color:var(--text);
+  outline:none;line-height:1.6
+}
 textarea:focus{border-color:var(--blue)}
 textarea::placeholder{color:#71859c}
-.input-label{display:block;margin:18px 0 9px;font-size:13px;font-weight:700}
+.input-label{
+  display:block;margin:18px 0 9px;
+  font-size:13px;font-weight:700
+}
 .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}
 .actions .primary{flex:1;min-width:180px;padding:14px}
 .samples{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
 .samples button{font-size:11px;padding:8px 10px}
-.result{display:none;margin-top:18px;border:1px solid var(--line);
-border-radius:15px;padding:18px;background:#0a1b30}
+.result{
+  display:none;margin-top:18px;border:1px solid var(--line);
+  border-radius:15px;padding:18px;background:#0a1b30
+}
 .result.show{display:block}
-.risk{font-size:12px;font-weight:900;letter-spacing:1px;
-padding:7px 10px;border-radius:8px;display:inline-block}
+.risk{
+  font-size:12px;font-weight:900;letter-spacing:1px;
+  padding:7px 10px;border-radius:8px;display:inline-block
+}
 .risk.high{background:#57232e;color:#ff9ca5}
 .risk.medium{background:#59431c;color:#ffdc8b}
 .risk.low{background:#164936;color:#8af0bd}
 .result h4{margin:13px 0 7px;font-size:17px}
-.result p{color:var(--muted);font-size:13px;line-height:1.6}
-.result ul{padding-left:20px;color:#dce7f2;font-size:13px;line-height:1.8}
+.result p{
+  color:var(--muted);font-size:13px;line-height:1.6
+}
+.result ul{
+  padding-left:20px;color:#dce7f2;
+  font-size:13px;line-height:1.8
+}
 .result li{margin:5px 0}
 .result-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-.side-item{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}
+.side-item{
+  display:flex;gap:12px;padding:13px 0;
+  border-bottom:1px solid var(--line)
+}
 .side-item:last-child{border:0}
-.side-icon{width:37px;height:37px;border-radius:11px;
-background:#183652;display:grid;place-items:center;flex-shrink:0}
+.side-icon{
+  width:37px;height:37px;border-radius:11px;
+  background:#183652;display:grid;place-items:center;
+  flex-shrink:0
+}
 .side-item b{font-size:13px}
-.side-item p{font-size:11px;color:var(--muted);line-height:1.5;margin:5px 0 0}
+.side-item p{
+  font-size:11px;color:var(--muted);
+  line-height:1.5;margin:5px 0 0
+}
 .history-entry{padding:12px 0;border-bottom:1px solid var(--line)}
 .history-entry:last-child{border:0}
 .history-entry b{font-size:12px}
@@ -98,438 +154,481 @@ background:#183652;display:grid;place-items:center;flex-shrink:0}
 .history-empty{font-size:12px;color:var(--muted);padding:10px 0}
 .section{margin-top:12px}
 .section-title{font-size:21px;margin:28px 0 14px}
-.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
-.feature{padding:18px;background:var(--panel);border:1px solid var(--line);
-border-radius:15px}
+.feature-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:13px
+}
+.feature{
+  padding:18px;background:var(--panel);
+  border:1px solid var(--line);border-radius:15px
+}
 .feature .emoji{font-size:24px}
 .feature h4{margin:11px 0 7px;font-size:14px}
-.feature p{margin:0;color:var(--muted);font-size:12px;line-height:1.6}
-.notice{padding:16px;border:1px solid #66532b;background:#2c2619;
-border-radius:14px;color:#f5d99b;font-size:12px;line-height:1.7;margin:20px 0}
-footer{border-top:1px solid var(--line);padding:24px 0;
-color:var(--muted);font-size:11px;line-height:1.8;margin-top:25px}
+.feature p{
+  margin:0;color:var(--muted);
+  font-size:12px;line-height:1.6
+}
+.notice{
+  padding:16px;border:1px solid #66532b;
+  background:#2c2619;border-radius:14px;
+  color:#f5d99b;font-size:12px;line-height:1.7;
+  margin:20px 0
+}
+footer{
+  border-top:1px solid var(--line);padding:24px 0;
+  color:var(--muted);font-size:11px;line-height:1.8;
+  margin-top:25px
+}
 footer b{color:var(--text)}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
-background:#193b52;color:white;padding:12px 18px;border-radius:12px;
-font-size:12px;display:none;z-index:10}
+.toast{
+  position:fixed;bottom:20px;left:50%;
+  transform:translateX(-50%);
+  background:#193b52;color:white;padding:12px 18px;
+  border-radius:12px;font-size:12px;
+  display:none;z-index:100
+}
 .toast.show{display:block}
+.contact-section{
+  background:#10243a;color:white;
+  padding:24px;margin:20px 0;border-radius:18px
+}
+.contact-box{
+  background:#18344d;padding:16px;
+  border-radius:12px;margin:12px 0
+}
+.contact-link{
+  display:inline-block;background:#25c46a;color:#062014;
+  padding:12px 20px;border-radius:8px;
+  text-decoration:none;font-weight:bold
+}
+.directory-link{color:#65e99a}
+.community-section{
+  padding:35px 16px;background:#101827;color:#fff;
+  font-family:Arial,sans-serif;border-radius:18px;
+  margin:20px 0
+}
+.community-inner{max-width:850px;margin:auto}
+.community-box{
+  background:#1d293b;padding:20px;
+  border-radius:14px;margin:20px 0
+}
+.community-section input,
+.community-section select,
+.community-section textarea{
+  width:100%;padding:12px;margin:8px 0 15px;
+  box-sizing:border-box;background:#fff;color:#111;
+  border:1px solid #9aa8b8;border-radius:7px
+}
+.community-section textarea{min-height:120px}
+.community-section button{
+  padding:12px 18px;border:0;border-radius:8px;
+  color:white;background:#2878d0
+}
+.community-section button:disabled{opacity:.6}
+.community-section button[type="submit"]{background:#16a085}
+.community-section button.danger-button{background:#a33}
+.community-status{font-size:13px;line-height:1.5}
+.community-warning{
+  padding:14px;margin:12px 0;
+  background:#26364b;border-radius:10px;
+  overflow-wrap:anywhere
+}
 @media(max-width:800px){
- .layout{grid-template-columns:1fr}
- .feature-grid{grid-template-columns:repeat(2,1fr)}
+  .layout{grid-template-columns:1fr}
+  .feature-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:520px){
- .app{padding:13px}
- .stats{gap:8px}
- .stat{padding:12px}
- .stat strong{font-size:20px}
- .categories{grid-template-columns:repeat(2,1fr)}
- .feature-grid{grid-template-columns:1fr}
- .brand h1{font-size:15px}
- .header-actions .btn{padding:8px}
- .hero{padding-top:27px}
+  .app{padding:13px}
+  .stats{gap:8px}
+  .stat{padding:12px}
+  .stat strong{font-size:20px}
+  .categories{grid-template-columns:repeat(2,1fr)}
+  .feature-grid{grid-template-columns:1fr}
+  .brand h1{font-size:15px}
+  .header-actions .btn{padding:8px}
+  .hero{padding-top:27px}
 }
 </style>
 </head>
+
 <body>
 <div class="app">
+
 <header>
- <div class="brand">
-  <div class="logo">🛡️</div>
-  <div><h1>TRUSTCHECK KENYA</h1>
-  <p>Safer decisions. Stronger communities.</p></div>
- </div>
- <div class="header-actions">
-  <button class="btn" id="languageBtn">Kiswahili</button>
-  <button class="btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">⌂ Home</button>
- </div>
+  <div class="brand">
+    <div class="logo">🛡️</div>
+    <div>
+      <h1>TRUSTCHECK KENYA</h1>
+      <p>Safer decisions. Stronger communities.</p>
+    </div>
+  </div>
+
+  <div class="header-actions">
+    <button class="btn" id="languageBtn" type="button">Kiswahili</button>
+    <button class="btn" type="button"
+      onclick="window.scrollTo({top:0,behavior:'smooth'})">⌂ Home</button>
+  </div>
 </header>
 
 <section class="hero">
- <div class="eyebrow">KENYA DIGITAL SAFETY PLATFORM</div>
- <h2 id="heroTitle">Think before <span>you trust.</span></h2>
- <p id="heroText">Check suspicious messages, M-Pesa requests, online shops, links and job offers before you take action.</p>
+  <div class="eyebrow">KENYA DIGITAL SAFETY PLATFORM</div>
+  <h2 id="heroTitle">Think before <span>you trust.</span></h2>
+  <p id="heroText">
+    Check suspicious messages, M-Pesa requests, online shops,
+    links and job offers before you take action.
+  </p>
 </section>
 
 <div class="stats">
- <div class="stat"><strong id="scanCount">0</strong><span>Checks on this device</span></div>
- <div class="stat"><strong>6</strong><span>Checking categories</span></div>
- <div class="stat"><strong>24/7</strong><span>Self-service access</span></div>
+  <div class="stat">
+    <strong id="scanCount">0</strong>
+    <span>Checks on this device</span>
+  </div>
+  <div class="stat">
+    <strong>6</strong>
+    <span>Checking categories</span>
+  </div>
+  <div class="stat">
+    <strong>24/7</strong>
+    <span>Self-service access</span>
+  </div>
 </div>
 
 <div class="layout">
 <main>
- <section class="card" id="scanner">
+
+<section class="card" id="scanner">
   <div class="card-head">
-   <h3 id="scanHeading">🔎 Check something suspicious</h3>
-   <span class="small">Private on this device</span>
+    <h3 id="scanHeading">🔎 Check something suspicious</h3>
+    <span class="small">Private on this device</span>
   </div>
-  <p class="small" id="scanDescription">Choose a category, paste the suspicious content and start your assessment.</p>
+
+  <p class="small" id="scanDescription">
+    Choose a category, paste the suspicious content and start your assessment.
+  </p>
 
   <div class="categories" id="categories">
-   <button class="category active" data-category="general"><span class="emoji">💬</span><b>General message</b><small>Messages and requests</small></button>
-   <button class="category" data-category="mpesa"><span class="emoji">📱</span><b>M-Pesa & mobile money</b><small>Payment and account safety</small></button>
-   <button class="category" data-category="job"><span class="emoji">💼</span><b>Job & earning offer</b><small>Recruitment and income</small></button>
-   <button class="category" data-category="shop"><span class="emoji">🛍️</span><b>Online shop or seller</b><small>Shopping and delivery</small></button>
-   <button class="category" data-category="link"><span class="emoji">🔗</span><b>SMS, WhatsApp or link</b><small>Links and impersonation</small></button>
-   <button class="category" data-category="payment"><span class="emoji">💳</span><b>Other payment request</b><small>Money and transfers</small></button>
+    <button class="category active" data-category="general" type="button">
+      <span class="emoji">💬</span>
+      <b>General message</b>
+      <small>Messages and requests</small>
+    </button>
+
+    <button class="category" data-category="mpesa" type="button">
+      <span class="emoji">📱</span>
+      <b>M-Pesa & mobile money</b>
+      <small>Payment and account safety</small>
+    </button>
+
+    <button class="category" data-category="job" type="button">
+      <span class="emoji">💼</span>
+      <b>Job & earning offer</b>
+      <small>Recruitment and income</small>
+    </button>
+
+    <button class="category" data-category="shop" type="button">
+      <span class="emoji">🛍️</span>
+      <b>Online shop or seller</b>
+      <small>Shopping and delivery</small>
+    </button>
+
+    <button class="category" data-category="link" type="button">
+      <span class="emoji">🔗</span>
+      <b>SMS, WhatsApp or link</b>
+      <small>Links and impersonation</small>
+    </button>
+
+    <button class="category" data-category="payment" type="button">
+      <span class="emoji">💳</span>
+      <b>Other payment request</b>
+      <small>Money and transfers</small>
+    </button>
   </div>
 
-  <label class="input-label" for="message" id="pasteLabel">Paste the message or content here</label>
-  <textarea id="message" maxlength="10000" placeholder="Paste suspicious text here. Never enter your PIN, password or OTP."></textarea>
-  <div class="small" style="text-align:right;margin-top:6px"><span id="charCount">0</span>/10,000</div>
+  <label class="input-label" for="message" id="pasteLabel">
+    Paste the message or content here
+  </label>
+
+  <textarea id="message" maxlength="10000"
+    placeholder="Paste suspicious text here. Never enter your PIN, password or OTP."></textarea>
+
+  <div class="small" style="text-align:right;margin-top:6px">
+    <span id="charCount">0</span>/10,000
+  </div>
+
   <div class="actions">
-   <button class="btn primary" id="checkBtn">🔍 CHECK FOR WARNING SIGNS</button>
-   <button class="btn" id="clearBtn">Clear</button>
+    <button class="btn primary" id="checkBtn" type="button">
+      🔍 CHECK FOR WARNING SIGNS
+    </button>
+    <button class="btn" id="clearBtn" type="button">Clear</button>
   </div>
-  <div class="samples">
-   <button class="btn" data-sample="job">Try job example</button>
-   <button class="btn" data-sample="mpesa">Try M-Pesa example</button>
-   <button class="btn" data-sample="shop">Try shop example</button>
-   <button class="btn" data-sample="link">Try link example</button>
-  </div>
-  <div class="result" id="result" aria-live="polite"></div>
- </section>
 
- <section class="card">
-  <div class="card-head"><h3>🕘 Recent checks</h3>
-   <button class="btn danger" id="clearHistory">Clear history</button>
+  <div class="samples">
+    <button class="btn" data-sample="job" type="button">Try job example</button>
+    <button class="btn" data-sample="mpesa" type="button">Try M-Pesa example</button>
+    <button class="btn" data-sample="shop" type="button">Try shop example</button>
+    <button class="btn" data-sample="link" type="button">Try link example</button>
   </div>
-  <div id="history"><div class="history-empty">Your recent checks will appear here on this device.</div></div>
- </section>
+
+  <div class="result" id="result" aria-live="polite"></div>
+</section>
+
+<section class="card">
+  <div class="card-head">
+    <h3>🕘 Recent checks</h3>
+    <button class="btn danger" id="clearHistory" type="button">
+      Clear history
+    </button>
+  </div>
+  <div id="history">
+    <div class="history-empty">
+      Your recent checks will appear here on this device.
+    </div>
+  </div>
+</section>
+
 </main>
 
 <aside>
- <section class="card">
-  <div class="card-head"><h3>🛡️ Safety centre</h3></div>
-  <div class="side-item"><div class="side-icon">🔐</div><div><b>Protect your PIN</b><p>Never share your M-Pesa PIN, passwords or one-time codes.</p></div></div>
-  <div class="side-item"><div class="side-icon">📞</div><div><b>Verify independently</b><p>Contact a company through details you find yourself on its official website.</p></div></div>
-  <div class="side-item"><div class="side-icon">💰</div><div><b>Think before paying</b><p>Do not rush into deposits, registration fees or advance payments.</p></div></div>
-  <div class="side-item"><div class="side-icon">📸</div><div><b>Keep evidence</b><p>Save suspicious messages, receipts and transaction references.</p></div></div>
- </section>
- <section class="card">
-  <div class="card-head"><h3>🚨 If you think you were scammed</h3></div>
-  <p class="small" style="line-height:1.8">
-   1. Stop sending money.<br>
-   2. Do not share private information.<br>
-   3. Check your actual transaction history.<br>
-   4. Preserve messages and receipts.<br>
-   5. Contact your bank or mobile money provider using official channels.
-  </p>
- </section>
+  <section class="card">
+    <div class="card-head"><h3>🛡️ Safety centre</h3></div>
+
+    <div class="side-item">
+      <div class="side-icon">🔐</div>
+      <div>
+        <b>Protect your PIN</b>
+        <p>Never share your M-Pesa PIN, passwords or one-time codes.</p>
+      </div>
+    </div>
+
+    <div class="side-item">
+      <div class="side-icon">📞</div>
+      <div>
+        <b>Verify independently</b>
+        <p>Contact a company through details you find yourself on its official website.</p>
+      </div>
+    </div>
+
+    <div class="side-item">
+      <div class="side-icon">💰</div>
+      <div>
+        <b>Think before paying</b>
+        <p>Do not rush into deposits, registration fees or advance payments.</p>
+      </div>
+    </div>
+
+    <div class="side-item">
+      <div class="side-icon">📸</div>
+      <div>
+        <b>Keep evidence</b>
+        <p>Save suspicious messages, receipts and transaction references.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <h3>🚨 If you think you were scammed</h3>
+    </div>
+    <p class="small" style="line-height:1.8">
+      1. Stop sending money.<br>
+      2. Do not share private information.<br>
+      3. Check your actual transaction history.<br>
+      4. Preserve messages and receipts.<br>
+      5. Contact your bank or mobile money provider using official channels.
+    </p>
+  </section>
 </aside>
 </div>
 
 <h3 class="section-title">What TrustCheck helps you assess</h3>
+
 <div class="feature-grid">
- <div class="feature"><div class="emoji">📱</div><h4>Mobile money safety</h4><p>Look for suspicious payment requests, PIN requests and reversal tricks.</p></div>
- <div class="feature"><div class="emoji">💼</div><h4>Job opportunity checks</h4><p>Identify recruitment fees, unrealistic salaries and pressure to register.</p></div>
- <div class="feature"><div class="emoji">🛍️</div><h4>Online shopping</h4><p>Assess advance-payment demands and suspicious seller messages.</p></div>
- <div class="feature"><div class="emoji">🔗</div><h4>Link and SMS safety</h4><p>Look for suspicious links, impersonation and urgent threats.</p></div>
- <div class="feature"><div class="emoji">💳</div><h4>Payment requests</h4><p>Check messages asking you to send money or share account information.</p></div>
- <div class="feature"><div class="emoji">🧭</div><h4>Safer next steps</h4><p>Get practical guidance for protecting your money and accounts.</p></div>
+  <div class="feature">
+    <div class="emoji">📱</div>
+    <h4>Mobile money safety</h4>
+    <p>Look for suspicious payment requests, PIN requests and reversal tricks.</p>
+  </div>
+
+  <div class="feature">
+    <div class="emoji">💼</div>
+    <h4>Job opportunity checks</h4>
+    <p>Identify recruitment fees, unrealistic salaries and pressure to register.</p>
+  </div>
+
+  <div class="feature">
+    <div class="emoji">🛍️</div>
+    <h4>Online shopping</h4>
+    <p>Assess advance-payment demands and suspicious seller messages.</p>
+  </div>
+
+  <div class="feature">
+    <div class="emoji">🔗</div>
+    <h4>Link and SMS safety</h4>
+    <p>Look for suspicious links, impersonation and urgent threats.</p>
+  </div>
+
+  <div class="feature">
+    <div class="emoji">💳</div>
+    <h4>Payment requests</h4>
+    <p>Check messages asking you to send money or share account information.</p>
+  </div>
+
+  <div class="feature">
+    <div class="emoji">🧭</div>
+    <h4>Safer next steps</h4>
+    <p>Get practical guidance for protecting your money and accounts.</p>
+  </div>
 </div>
 
 <div class="notice">
- <b>Important safety notice:</b> Never paste your real M-Pesa PIN, password, OTP, full card number or other secret credentials into this tool. Use a redacted sample instead.
+  <b>Important safety notice:</b>
+  Never paste your real M-Pesa PIN, password, OTP, full card number
+  or other secret credentials into this tool. Use a redacted sample instead.
 </div>
 
 <footer>
- <b>TrustCheck Kenya</b><br>
- Helping people make safer digital decisions.<br>
- TrustCheck Kenya is an independent preliminary safety information tool. It is not affiliated with Safaricom, M-Pesa, banks, government agencies or law enforcement. Its automated assessment is not proof of fraud or a guarantee that something is safe.<br>
- © 2026 TrustCheck Kenya
+  <b>TrustCheck Kenya</b><br>
+  Helping people make safer digital decisions.<br>
+  TrustCheck Kenya is an independent preliminary safety information tool.
+  It is not affiliated with Safaricom, M-Pesa, banks, government agencies
+  or law enforcement. Its automated assessment is not proof of fraud
+  or a guarantee that something is safe.<br>
+  © 2026 TrustCheck Kenya
 </footer>
+
 </div>
-<div class="toast" id="toast"></div>
 
-<script>
-const samples={
- job:"Congratulations! You have been selected for an online job earning KSh 5,000 daily. To activate your account, pay a registration fee of KSh 500 through M-Pesa. Limited slots available. Pay now to secure your position. Guaranteed income!",
- mpesa:"URGENT! Your M-Pesa account will be blocked today. Send your M-Pesa PIN and OTP to this number immediately to avoid losing your money. Act now!",
- shop:"SPECIAL OFFER! Brand-new smartphones at 70% discount. Pay KSh 2,000 deposit through M-Pesa before delivery. We have only 3 phones remaining. No refunds after payment.",
- link:"Your bank account has been suspended. Click http://secure-account-login.example.com immediately and enter your password and OTP to restore access."
-};
-let selected="general";
-let latest=null;
-let swahili=false;
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-const categoryNames={
- general:"General message",mpesa:"M-Pesa & mobile money",
- job:"Job & earning offer",shop:"Online shop or seller",
- link:"SMS, WhatsApp or link",payment:"Other payment request"
-};
-const advice={
- general:["Verify the sender through a separate trusted channel.","Do not share passwords, PINs or verification codes.","Do not act under pressure."],
- mpesa:["Never share your M-Pesa PIN or OTP with anyone.","Check your own M-Pesa transaction history.","Contact your provider using official channels."],
- job:["Verify the employer using independently found official contact details.","Be cautious of recruitment, training or registration fees.","Do not provide identity documents to an unverified recruiter."],
- shop:["Check the seller's identity and independent customer feedback.","Avoid paying the full amount to an unverified seller.","Use payment and delivery methods with buyer protection."],
- link:["Do not click suspicious links or download unexpected files.","Open the official service by typing its known address yourself.","Never enter passwords or OTPs through an unsolicited link."],
- payment:["Verify the recipient before transferring money.","Do not pay unexpected fees to release money or prizes.","Check the transaction in your own account." ]
-};
-
-function analyse(text,category){
- const t=text.toLowerCase();
- const flags=[];
- const add=(condition,message)=>{if(condition)flags.push(message)};
- add(/\b(pin|otp|one.time.password|verification code|password|passcode|security code)\b/.test(t) &&
-     /\b(send|share|give|provide|enter|reply|confirm|tell|submit|need|asking|requests?)\b/.test(t),
- "The message requests sensitive account information or verification codes.");
- add(/\b(registration|activation|processing|application|training|recruitment|joining)\s+(fee|fees|payment|charge)\b/.test(t) ||
-     /\b(pay|send|deposit)\b.{0,45}\b(fee|activate|registration|job|position|training)\b/.test(t),
- "The message asks for an upfront fee connected to an opportunity or service.");
- add(/\b(guaranteed|guarantee|risk.free|no risk|sure income|daily income|earn)\b/.test(t) &&
-     /\b(ksh|kes|shillings|daily|weekly|monthly|profit|income|salary)\b/.test(t),
- "The offer makes unusually attractive or guaranteed earning claims.");
- add(/\b(urgent|immediately|right now|act now|limited time|last chance|today only|hurry|blocked today|expires today)\b/.test(t),
- "The message uses urgency or pressure to make you act quickly.");
- add(/\b(click here|tap here|verify now|claim your prize|winner|you have won|account suspended|account blocked)\b/.test(t),
- "The message uses a prize, threat or account warning to prompt action.");
- add(/\b(advance payment|pay before delivery|deposit before delivery|no refunds|send deposit)\b/.test(t),
- "The seller requests advance payment or describes restrictive refund terms.");
- add(/\b(mpesa|m-pesa|safaricom|paybill|till number|transaction reversal|reversal)\b/.test(t) &&
-     /\b(send money|reverse|refund|wrong transaction|payment confirmation)\b/.test(t),
- "The message involves a mobile-money payment or reversal that should be independently verified.");
- add(/https?:\/\//i.test(text),"The message contains a web link. Check its exact domain before opening.");
- add(/bit\.ly|tinyurl|t\.co|cutt\.ly|is\.gd/i.test(text),
- "The message contains a shortened link that hides its final destination.");
- add(/https?:\/\/\d{1,3}(?:\.\d{1,3}){3}/i.test(text),
- "The link uses a numeric IP address instead of a recognisable domain.");
- add(/\b(send|pay|transfer)\b.{0,40}\b(money|cash|ksh|kes)\b/.test(t) &&
-     /\b(prize|release|unlock|claim|reward|refund)\b/.test(t),
- "The message connects a payment request to a prize, reward or release of funds.");
- 
- let level="LOW RISK";
- if(flags.length>=3 || flags.some(x=>x.includes("sensitive account information")))level="HIGH RISK";
- else if(flags.length>=1)level="NEEDS CAUTION";
- return {level,flags,advice:advice[category]||advice.general};
-}
-
-function escapeHTML(value){
- return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-}
-function showToast(message){
- const el=document.getElementById("toast");
- el.textContent=message;el.classList.add("show");
- setTimeout(()=>el.classList.remove("show"),2300);
-}
-function getHistory(){
- try{return JSON.parse(localStorage.getItem("tc_history")||"[]")}catch(e){return []}
-}
-function saveHistory(item){
- const list=getHistory();list.unshift(item);
- localStorage.setItem("tc_history",JSON.stringify(list.slice(0,20)));
- renderHistory();
-}
-function renderHistory(){
- const list=getHistory();
- document.getElementById("scanCount").textContent=list.length;
- const el=document.getElementById("history");
- if(!list.length){el.innerHTML='<div class="history-empty">Your recent checks will appear here on this device.</div>';return}
- el.innerHTML=list.slice(0,7).map(x=>`
- <div class="history-entry">
- <b>${escapeHTML(x.category)} · ${escapeHTML(x.level)}</b>
- <p>${escapeHTML(x.preview)} · ${escapeHTML(x.date)}</p>
- </div>`).join("");
-}
-function renderResult(data){
- const el=document.getElementById("result");
- const cls=data.level==="HIGH RISK"?"high":data.level==="NEEDS CAUTION"?"medium":"low";
- const flagHTML=data.flags.length?data.flags.map(x=>`<li>${escapeHTML(x)}</li>`).join(""):"<li>No common warning patterns were detected in this text. This does not prove it is safe.</li>";
- el.innerHTML=`
- <span class="risk ${cls}">${escapeHTML(data.level)}</span>
- <h4>Assessment result</h4>
- <p>${data.level==="HIGH RISK"?"Several serious warning signs were found. Do not proceed until independently verified.":data.level==="NEEDS CAUTION"?"Some warning signs were found. Verify the message before taking action.":"No common warning patterns were detected. Continue to verify independently."}</p>
- <h4>Warning signs found</h4><ul>${flagHTML}</ul>
- <h4>What you should do</h4>
- <ul>${data.advice.map(x=>`<li>${escapeHTML(x)}</li>`).join("")}</ul>
- <p><b>Important:</b> This is an automated preliminary assessment, not proof of fraud or a guarantee that something is safe.</p>
- <div class="result-actions">
- <button class="btn" id="copyResult">Copy report</button>
- <button class="btn" id="shareResult">Share report</button>
- </div>`;
- el.classList.add("show");
- document.getElementById("copyResult").onclick=()=>copyReport(data);
- document.getElementById("shareResult").onclick=()=>shareReport(data);
-}
-function reportText(data){
- return "TRUSTCHECK KENYA — PRELIMINARY ASSESSMENT\nCategory: "+categoryNames[selected]+"\nResult: "+data.level+"\n\nWarning signs:\n"+(data.flags.length?data.flags.map(x=>"• "+x).join("\n"):"No common warning patterns detected.")+"\n\nSafety advice:\n"+data.advice.map(x=>"• "+x).join("\n")+"\n\nThis automated assessment is not proof of fraud or a guarantee of safety.";
-}
-async function copyReport(data){
- try{await navigator.clipboard.writeText(reportText(data));showToast("Report copied")}
- catch(e){showToast("Copy is unavailable in this browser")}
-}
-async function shareReport(data){
- const content=reportText(data);
- if(navigator.share){try{await navigator.share({title:"TrustCheck Kenya report",text:content})}catch(e){}}
- else copyReport(data);
-}
-document.querySelectorAll(".category").forEach(btn=>{
- btn.addEventListener("click",()=>{
-  document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
-  btn.classList.add("active");selected=btn.dataset.category;
- });
-});
-document.getElementById("message").addEventListener("input",e=>{
- document.getElementById("charCount").textContent=e.target.value.length;
-});
-document.querySelectorAll("[data-sample]").forEach(btn=>{
- btn.addEventListener("click",()=>{
-  const kind=btn.dataset.sample;
-  selected=kind;
-  document.querySelectorAll(".category").forEach(x=>x.classList.toggle("active",x.dataset.category===kind));
-  document.getElementById("message").value=samples[kind];
-  document.getElementById("charCount").textContent=samples[kind].length;
-  document.getElementById("result").classList.remove("show");
-  showToast("Example loaded. Tap Check for warning signs.");
- });
-});
-document.getElementById("checkBtn").addEventListener("click",()=>{
- const text=document.getElementById("message").value.trim();
- if(!text){showToast("Paste a message first");return}
- if(text.length<5){showToast("Please enter more content to assess");return}
- const data=analyse(text,selected);
- latest=data;
- renderResult(data);
- saveHistory({category:categoryNames[selected],level:data.level,
- preview:text.slice(0,65),date:new Date().toLocaleString()});
- document.getElementById("result").scrollIntoView({behavior:"smooth",block:"nearest"});
-});
-document.getElementById("clearBtn").addEventListener("click",()=>{
- document.getElementById("message").value="";
- document.getElementById("charCount").textContent="0";
- document.getElementById("result").classList.remove("show");
- showToast("Checker cleared");
-});
-document.getElementById("clearHistory").addEventListener("click",()=>{
- if(confirm("Clear the check history saved on this device?")){
-  localStorage.removeItem("tc_history");renderHistory();showToast("History cleared");
- }
-});
-document.getElementById("languageBtn").addEventListener("click",()=>{
- swahili=!swahili;
- document.getElementById("languageBtn").textContent=swahili?"English":"Kiswahili";
- document.getElementById("heroTitle").innerHTML=swahili?"Fikiri kabla ya <span>kuamini.</span>":"Think before <span>you trust.</span>";
- document.getElementById("heroText").textContent=swahili?
- "Kagua ujumbe unaotiliwa shaka, maombi ya M-Pesa, maduka ya mtandaoni, viungo na matangazo ya kazi kabla ya kuchukua hatua.":
- "Check suspicious messages, M-Pesa requests, online shops, links and job offers before you take action.";
- document.getElementById("scanHeading").textContent=swahili?"🔎 Kagua jambo linalotia shaka":"🔎 Check something suspicious";
- document.getElementById("scanDescription").textContent=swahili?"Chagua aina, bandika ujumbe na uanze ukaguzi.":"Choose a category, paste the suspicious content and start your assessment.";
- document.getElementById("pasteLabel").textContent=swahili?"Bandika ujumbe hapa":"Paste the message or content here";
- document.getElementById("checkBtn").textContent=swahili?"🔍 ANGALIA ISHARA ZA HATARI":"🔍 CHECK FOR WARNING SIGNS";
-});
-renderHistory();
-</script>
-  
-<section style="background:#10243a;color:white;padding:24px;margin:20px 0;border-radius:18px;">
+<!-- SAFARICOM CONTACT SECTION -->
+<section class="contact-section">
   <h2>📞 Need help? Contact Safaricom</h2>
   <p>
     Received a suspicious M-Pesa message, payment request,
-    or phone call? Contact Safaricom directly.
+    or phone call? Contact Safaricom directly using its official channels.
   </p>
 
-  <div style="background:#18344d;padding:16px;border-radius:12px;margin:12px 0;">
+  <div class="contact-box">
     <h3>Safaricom Prepay</h3>
     <p>Call 100</p>
-    <a href="tel:100" style="display:inline-block;background:#25c46a;color:#062014;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:bold;">
-      📞 Call Safaricom
-    </a>
+    <a href="tel:100" class="contact-link">📞 Call Safaricom</a>
   </div>
 
-  <div style="background:#18344d;padding:16px;border-radius:12px;margin:12px 0;">
+  <div class="contact-box">
     <h3>Safaricom Postpay</h3>
     <p>Call 200</p>
-    <a href="tel:200" style="display:inline-block;background:#25c46a;color:#062014;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:bold;">
-      📞 Call Safaricom
-    </a>
+    <a href="tel:200" class="contact-link">📞 Call Safaricom</a>
   </div>
 
-  <div style="background:#18344d;padding:16px;border-radius:12px;margin:12px 0;">
+  <div class="contact-box">
     <h3>Report suspicious messages</h3>
     <p>Send suspicious messages to 333 by SMS.</p>
-    <a href="sms:333" style="display:inline-block;background:#25c46a;color:#062014;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:bold;">
-      ✉️ Open SMS
-    </a>
+    <a href="sms:333" class="contact-link">✉️ Open SMS</a>
   </div>
 
-  <p style="font-size:13px;color:#cbd5e1;">
-    
-<div style="background:#18344d;padding:16px;border-radius:12px;margin:12px 0;">
-  <h3>🌐 Safaricom Official Website</h3>
-  <p>Visit Safaricom's official website for verified company information and support.</p>
-  <a href="https://www.safaricom.co.ke/" target="_blank" rel="noopener noreferrer"
-     style="display:inline-block;background:#25c46a;color:#062014;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:bold;">
-    Visit Safaricom
-  </a>
-</div>
-  
-<section style="background:#10243a;color:white;padding:24px;margin:20px 0;border-radius:18px;">
-  <h2>🇰🇪 Kenya Official Help & Reporting Directory</h2>
-  <p>Contact the relevant official organisation for assistance with emergencies, fraud and digital safety.</p>
+  <div class="contact-box">
+    <h3>🌐 Safaricom Official Website</h3>
+    <p>Visit Safaricom's official website for company information and support.</p>
+    <a href="https://www.safaricom.co.ke/"
+       target="_blank" rel="noopener noreferrer"
+       class="contact-link">Visit Safaricom</a>
+  </div>
 
-  <div style="background:#18344d;padding:16px;border-radius:12px;margin:12px 0;">
+  <p style="font-size:13px;color:#cbd5e1">
+    TrustCheck Kenya is an independent safety information platform,
+    not an official Safaricom service. Never share your M-Pesa PIN or OTP.
+  </p>
+</section>
+
+<!-- KENYA OFFICIAL HELP DIRECTORY -->
+<section class="contact-section">
+  <h2>🇰🇪 Kenya Official Help & Reporting Directory</h2>
+  <p>
+    Contact the relevant organisation for assistance with emergencies,
+    fraud and digital safety. Verify contact details on official websites.
+  </p>
+
+  <div class="contact-box">
     <h3>🚨 National Police Service</h3>
     <p>For emergencies, call 999, 112 or 911.</p>
-    <a href="tel:999" style="color:#65e99a;">Call 999</a>
-    <p><a href="https://www.nationalpolice.go.ke/" target="_blank" rel="noopener noreferrer" style="color:#65e99a;">Official Police Website</a></p>
+    <a href="tel:999" class="directory-link">Call 999</a>
+    <p>
+      <a href="https://www.nationalpolice.go.ke/"
+         target="_blank" rel="noopener noreferrer"
+         class="directory-link">Official Police Website</a>
+    </p>
   </div>
 
-  <div style="background:#18344d;padding:16px;border-radius:12px;margin:12px 0;">
+  <div class="contact-box">
     <h3>🔎 Directorate of Criminal Investigations (DCI)</h3>
     <p>Report suspected criminal activity and seek guidance.</p>
     <p><strong>Helpline: 0800 722 203</strong></p>
-    <a href="tel:0800722203" style="color:#65e99a;">Call DCI</a>
-    <p><a href="https://www.dci.go.ke/" target="_blank" rel="noopener noreferrer" style="color:#65e99a;">Official DCI Website</a></p>
+    <a href="tel:0800722203" class="directory-link">Call DCI</a>
+    <p>
+      <a href="https://www.dci.go.ke/"
+         target="_blank" rel="noopener noreferrer"
+         class="directory-link">Official DCI Website</a>
+    </p>
   </div>
 
-  <div style="background:#18344d;padding:16px;border-radius:12px;margin:12px 0;">
+  <div class="contact-box">
     <h3>📡 Communications Authority of Kenya</h3>
     <p>For telecommunications and communications-service complaints.</p>
     <p><strong>Phone: 0703 042 000</strong></p>
-    <a href="tel:0703042000" style="color:#65e99a;">Call Communications Authority</a>
-    <p><a href="https://www.ca.go.ke/" target="_blank" rel="noopener noreferrer" style="color:#65e99a;">Official Website</a></p>
+    <a href="tel:0703042000" class="directory-link">
+      Call Communications Authority
+    </a>
+    <p>
+      <a href="https://www.ca.go.ke/"
+         target="_blank" rel="noopener noreferrer"
+         class="directory-link">Official Website</a>
+    </p>
   </div>
 
-  <p style="font-size:13px;color:#cbd5e1;">
-    
-<div style="background:#18344d;padding:16px;border-radius:12px;margin:12px 0;">
-  <h3>🏦 Central Bank of Kenya (CBK)</h3>
-  <p>For information about banking services, financial institutions and financial fraud awareness.</p>
-  <p><strong>Telephone: +254 20 286 0000</strong></p>
-  <a href="tel:+254202860000" style="color:#65e99a;">📞 Contact CBK</a>
-  <p>
-    <a href="https://www.centralbank.go.ke/" target="_blank" rel="noopener noreferrer" style="color:#65e99a;">
-      Official CBK Website
+  <div class="contact-box">
+    <h3>🏦 Central Bank of Kenya (CBK)</h3>
+    <p>
+      For information about banking services, financial institutions
+      and financial fraud awareness.
+    </p>
+    <p><strong>Telephone: +254 20 286 0000</strong></p>
+    <a href="tel:+254202860000" class="directory-link">
+      📞 Contact CBK
     </a>
-  </p>
-  <p>
-    <a href="https://www.centralbank.go.ke/fraud-awareness/" target="_blank" rel="noopener noreferrer" style="color:#65e99a;">
-      Fraud Awareness Information
-    </a>
-  </p>
-</div>
+    <p>
+      <a href="https://www.centralbank.go.ke/"
+         target="_blank" rel="noopener noreferrer"
+         class="directory-link">Official CBK Website</a>
+    </p>
+    <p>
+      <a href="https://www.centralbank.go.ke/fraud-awareness/"
+         target="_blank" rel="noopener noreferrer"
+         class="directory-link">Fraud Awareness Information</a>
+    </p>
+  </div>
 
+  <p style="font-size:13px;color:#cbd5e1">
     TrustCheck Kenya is independent and does not represent these organisations.
     Verify contact details on official websites before sharing personal information.
   </p>
 </section>
 
+<!-- TRUSTCHECK COMMUNITY WATCH -->
+<section id="community-watch" class="community-section">
+  <div class="community-inner">
 
-    TrustCheck Kenya is an independent safety information platform,
-    not an official Safaricom service. Never share your M-Pesa PIN
-    or OTP with anyone.
-  </p>
-</section>
-  <!-- TRUSTCHECK COMMUNITY WATCH -->
-<section id="community-watch" style="padding:35px 16px;background:#101827;color:#fff;font-family:Arial,sans-serif;">
-  <div style="max-width:850px;margin:auto;">
     <h2>🛡️ TrustCheck Community Watch</h2>
-    <p>Share suspicious messages and help other Kenyans recognise possible scams.</p>
+    <p>
+      Share suspicious messages and help other Kenyans recognise possible scams.
+    </p>
 
-    <div style="background:#1d293b;padding:20px;border-radius:14px;margin:20px 0;">
+    <div class="community-box">
       <h3>Report something suspicious</h3>
+
       <form id="tc-report-form">
-        <label>Scam category</label>
-        <select id="tc-category" required style="width:100%;padding:12px;margin:8px 0 15px;">
+        <label for="tc-category">Scam category</label>
+
+        <select id="tc-category" required>
           <option value="">Choose category</option>
           <option value="mpesa">M-Pesa / Mobile money</option>
           <option value="job">Job / Online earning</option>
@@ -539,86 +638,582 @@ renderHistory();
           <option value="other">Other</option>
         </select>
 
-        <label>Describe what happened</label>
-        <textarea id="tc-description" required minlength="10" maxlength="5000"
-          placeholder="Describe the suspicious message or experience. Do not include passwords, PINs, OTPs or private information."
-          style="width:100%;min-height:120px;padding:12px;margin:8px 0 15px;box-sizing:border-box;"></textarea>
+        <label for="tc-description">Describe what happened</label>
 
-        <label>Suspicious phone number (optional)</label>
-        <input id="tc-phone" maxlength="30" placeholder="Optional"
-          style="width:100%;padding:12px;margin:8px 0 15px;box-sizing:border-box;">
+        <textarea id="tc-description"
+          required minlength="10" maxlength="3000"
+          placeholder="Describe the suspicious message or experience. Do not include passwords, PINs, OTPs or private information."></textarea>
 
-        <label>Suspicious website link (optional)</label>
-        <input id="tc-link" type="url" maxlength="500" placeholder="https://example.com"
-          style="width:100%;padding:12px;margin:8px 0 15px;box-sizing:border-box;">
+        <label for="tc-phone">Suspicious phone number (optional)</label>
+        <input id="tc-phone" maxlength="30" placeholder="Optional">
 
-        <p style="font-size:12px;color:#bdc8d8;">
-          Reports are reviewed before publication. Do not submit anyone's private information.
+        <label for="tc-link">Suspicious website link (optional)</label>
+        <input id="tc-link" type="url" maxlength="500"
+          placeholder="https://example.com">
+
+        <div id="tc-turnstile" style="margin:15px 0"></div>
+
+        <p style="font-size:12px;color:#bdc8d8">
+          Reports are reviewed before publication. Do not submit anyone's
+          private information.
         </p>
-        <button type="submit" style="padding:13px 20px;background:#16a085;color:white;border:0;border-radius:8px;font-weight:bold;">
-          Submit report
-        </button>
-        <p id="tc-submit-status" role="status"></p>
+
+        <button type="submit">Submit report</button>
+        <p id="tc-submit-status" class="community-status"
+           role="status" aria-live="polite"></p>
       </form>
     </div>
 
-    <div style="background:#1d293b;padding:20px;border-radius:14px;margin:20px 0;">
+    <div class="community-box">
       <h3>Community warnings</h3>
       <p>Reports approved by a moderator appear here.</p>
       <button id="tc-refresh" type="button">Refresh warnings</button>
-      <div id="tc-approved-list" style="margin-top:15px;">Loading reports...</div>
+      <div id="tc-approved-list" style="margin-top:15px">
+        Loading reports...
+      </div>
     </div>
 
-    <div style="background:#1d293b;padding:20px;border-radius:14px;margin:20px 0;">
+    <div class="community-box">
       <h3>Administrator review</h3>
-      <p>Sign in with your TrustCheck administrator account to review submissions.</p>
+      <p>
+        Sign in with your TrustCheck administrator account
+        to review submissions.
+      </p>
 
       <form id="tc-admin-login">
-        <input id="tc-admin-email" type="email" required placeholder="Administrator email"
-          autocomplete="username" style="width:100%;padding:12px;margin:8px 0;box-sizing:border-box;">
-        <input id="tc-admin-password" type="password" required placeholder="Password"
-          autocomplete="current-password" style="width:100%;padding:12px;margin:8px 0;box-sizing:border-box;">
-        <button type="submit" style="padding:12px 18px;background:#2878d0;color:white;border:0;border-radius:8px;">
-          Administrator sign in
-        </button>
+        <input id="tc-admin-email" type="email" required
+          placeholder="Administrator email" autocomplete="username">
+
+        <input id="tc-admin-password" type="password" required
+          placeholder="Password" autocomplete="current-password">
+
+        <button type="submit">Administrator sign in</button>
       </form>
 
-      <p id="tc-admin-status" role="status"></p>
-      <button id="tc-admin-logout" type="button" hidden>Sign out</button>
+      <p id="tc-admin-status" class="community-status"
+         role="status" aria-live="polite"></p>
+
+      <button id="tc-admin-logout" type="button" hidden>
+        Sign out
+      </button>
+
       <div id="tc-pending-list"></div>
     </div>
+
   </div>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(() => {
-  const SUPABASE_URL = "https://ktqpjkxbrgtobqwmorkl.supabase.co";
-  const SUPABASE_KEY = "sb_publishable_1e6pcjBpG6XJcGIyf6bHvg_f_BfXl2o";
+<!-- CLOUDFLARE TURNSTILE -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
 
-  if (!window.supabase) {
-    document.getElementById("tc-submit-status").textContent =
-      "Connection library could not load. Please refresh the page.";
+<!-- SUPABASE LIBRARY -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+"use strict";
+
+/* =========================
+   MAIN TRUSTCHECK CHECKER
+========================= */
+
+const samples = {
+  job: "Congratulations! You have been selected for an online job earning KSh 5,000 daily. To activate your account, pay a registration fee of KSh 500 through M-Pesa. Limited slots available. Pay now to secure your position. Guaranteed income!",
+
+  mpesa: "URGENT! Your M-Pesa account will be blocked today. Send your M-Pesa PIN and OTP to this number immediately to avoid losing your money. Act now!",
+
+  shop: "SPECIAL OFFER! Brand-new smartphones at 70% discount. Pay KSh 2,000 deposit through M-Pesa before delivery. We have only 3 phones remaining. No refunds after payment.",
+
+  link: "Your bank account has been suspended. Click http://secure-account-login.example.com immediately and enter your password and OTP to restore access."
+};
+
+let selected = "general";
+let swahili = false;
+
+const categoryNames = {
+  general: "General message",
+  mpesa: "M-Pesa & mobile money",
+  job: "Job & earning offer",
+  shop: "Online shop or seller",
+  link: "SMS, WhatsApp or link",
+  payment: "Other payment request"
+};
+
+const advice = {
+  general: [
+    "Verify the sender through a separate trusted channel.",
+    "Do not share passwords, PINs or verification codes.",
+    "Do not act under pressure."
+  ],
+
+  mpesa: [
+    "Never share your M-Pesa PIN or OTP with anyone.",
+    "Check your own M-Pesa transaction history.",
+    "Contact your provider using official channels."
+  ],
+
+  job: [
+    "Verify the employer using independently found official contact details.",
+    "Be cautious of recruitment, training or registration fees.",
+    "Do not provide identity documents to an unverified recruiter."
+  ],
+
+  shop: [
+    "Check the seller's identity and independent customer feedback.",
+    "Avoid paying the full amount to an unverified seller.",
+    "Use payment and delivery methods with buyer protection."
+  ],
+
+  link: [
+    "Do not click suspicious links or download unexpected files.",
+    "Open the official service by typing its known address yourself.",
+    "Never enter passwords or OTPs through an unsolicited link."
+  ],
+
+  payment: [
+    "Verify the recipient before transferring money.",
+    "Do not pay unexpected fees to release money or prizes.",
+    "Check the transaction in your own account."
+  ]
+};
+
+function analyse(text, category) {
+  const t = text.toLowerCase();
+  const flags = [];
+
+  const add = (condition, message) => {
+    if (condition) flags.push(message);
+  };
+
+  add(
+    /\b(pin|otp|one.time.password|verification code|password|passcode|security code)\b/.test(t) &&
+    /\b(send|share|give|provide|enter|reply|confirm|tell|submit|need|asking|requests?)\b/.test(t),
+    "The message requests sensitive account information or verification codes."
+  );
+
+  add(
+    /\b(registration|activation|processing|application|training|recruitment|joining)\s+(fee|fees|payment|charge)\b/.test(t) ||
+    /\b(pay|send|deposit)\b.{0,45}\b(fee|activate|registration|job|position|training)\b/.test(t),
+    "The message asks for an upfront fee connected to an opportunity or service."
+  );
+
+  add(
+    /\b(guaranteed|guarantee|risk.free|no risk|sure income|daily income|earn)\b/.test(t) &&
+    /\b(ksh|kes|shillings|daily|weekly|monthly|profit|income|salary)\b/.test(t),
+    "The offer makes unusually attractive or guaranteed earning claims."
+  );
+
+  add(
+    /\b(urgent|immediately|right now|act now|limited time|last chance|today only|hurry|blocked today|expires today)\b/.test(t),
+    "The message uses urgency or pressure to make you act quickly."
+  );
+
+  add(
+    /\b(click here|tap here|verify now|claim your prize|winner|you have won|account suspended|account blocked)\b/.test(t),
+    "The message uses a prize, threat or account warning to prompt action."
+  );
+
+  add(
+    /\b(advance payment|pay before delivery|deposit before delivery|no refunds|send deposit)\b/.test(t),
+    "The seller requests advance payment or describes restrictive refund terms."
+  );
+
+  add(
+    /\b(mpesa|m-pesa|safaricom|paybill|till number|transaction reversal|reversal)\b/.test(t) &&
+    /\b(send money|reverse|refund|wrong transaction|payment confirmation)\b/.test(t),
+    "The message involves a mobile-money payment or reversal that should be independently verified."
+  );
+
+  add(
+    /https?:\/\//i.test(text),
+    "The message contains a web link. Check its exact domain before opening."
+  );
+
+  add(
+    /bit\.ly|tinyurl|t\.co|cutt\.ly|is\.gd/i.test(text),
+    "The message contains a shortened link that hides its final destination."
+  );
+
+  add(
+    /https?:\/\/\d{1,3}(?:\.\d{1,3}){3}/i.test(text),
+    "The link uses a numeric IP address instead of a recognisable domain."
+  );
+
+  add(
+    /\b(send|pay|transfer)\b.{0,40}\b(money|cash|ksh|kes)\b/.test(t) &&
+    /\b(prize|release|unlock|claim|reward|refund)\b/.test(t),
+    "The message connects a payment request to a prize, reward or release of funds."
+  );
+
+  let level = "LOW RISK";
+
+  if (
+    flags.length >= 3 ||
+    flags.some(x => x.includes("sensitive account information"))
+  ) {
+    level = "HIGH RISK";
+  } else if (flags.length >= 1) {
+    level = "NEEDS CAUTION";
+  }
+
+  return {
+    level,
+    flags,
+    advice: advice[category] || advice.general
+  };
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, c => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[c]));
+}
+
+function showToast(message) {
+  const el = document.getElementById("toast");
+  el.textContent = message;
+  el.classList.add("show");
+
+  window.setTimeout(() => {
+    el.classList.remove("show");
+  }, 2300);
+}
+
+function getHistory() {
+  try {
+    const value = JSON.parse(localStorage.getItem("tc_history") || "[]");
+    return Array.isArray(value) ? value : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveHistory(item) {
+  try {
+    const list = getHistory();
+    list.unshift(item);
+    localStorage.setItem("tc_history", JSON.stringify(list.slice(0, 20)));
+    renderHistory();
+  } catch (error) {
+    showToast("History could not be saved on this device.");
+  }
+}
+
+function renderHistory() {
+  const list = getHistory();
+
+  document.getElementById("scanCount").textContent = list.length;
+
+  const historyEl = document.getElementById("history");
+
+  if (!list.length) {
+    historyEl.innerHTML =
+      '<div class="history-empty">Your recent checks will appear here on this device.</div>';
     return;
   }
 
-  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-  const el = id => document.getElementById(id);
-  const safeText = value => String(value || "");
+  historyEl.innerHTML = list.slice(0, 7).map(item => `
+    <div class="history-entry">
+      <b>${escapeHTML(item.category)} · ${escapeHTML(item.level)}</b>
+      <p>${escapeHTML(item.preview)} · ${escapeHTML(item.date)}</p>
+    </div>
+  `).join("");
+}
 
-  function showMessage(id, message) {
-    el(id).textContent = message;
+function renderResult(data) {
+  const resultEl = document.getElementById("result");
+
+  const cls =
+    data.level === "HIGH RISK" ? "high" :
+    data.level === "NEEDS CAUTION" ? "medium" : "low";
+
+  const flagHTML = data.flags.length
+    ? data.flags.map(item => `<li>${escapeHTML(item)}</li>`).join("")
+    : "<li>No common warning patterns were detected in this text. This does not prove it is safe.</li>";
+
+  const resultDescription =
+    data.level === "HIGH RISK"
+      ? "Several serious warning signs were found. Do not proceed until independently verified."
+      : data.level === "NEEDS CAUTION"
+        ? "Some warning signs were found. Verify the message before taking action."
+        : "No common warning patterns were detected. Continue to verify independently.";
+
+  resultEl.innerHTML = `
+    <span class="risk ${cls}">${escapeHTML(data.level)}</span>
+
+    <h4>Assessment result</h4>
+    <p>${resultDescription}</p>
+
+    <h4>Warning signs found</h4>
+    <ul>${flagHTML}</ul>
+
+    <h4>What you should do</h4>
+    <ul>${data.advice.map(item => `<li>${escapeHTML(item)}</li>`).join("")}</ul>
+
+    <p>
+      <b>Important:</b> This is an automated preliminary assessment,
+      not proof of fraud or a guarantee that something is safe.
+    </p>
+
+    <div class="result-actions">
+      <button class="btn" id="copyResult" type="button">Copy report</button>
+      <button class="btn" id="shareResult" type="button">Share report</button>
+    </div>
+  `;
+
+  resultEl.classList.add("show");
+
+  document.getElementById("copyResult").addEventListener("click", () => {
+    copyReport(data);
+  });
+
+  document.getElementById("shareResult").addEventListener("click", () => {
+    shareReport(data);
+  });
+}
+
+function reportText(data) {
+  return (
+    "TRUSTCHECK KENYA — PRELIMINARY ASSESSMENT\n" +
+    "Category: " + categoryNames[selected] + "\n" +
+    "Result: " + data.level + "\n\n" +
+    "Warning signs:\n" +
+    (data.flags.length
+      ? data.flags.map(item => "• " + item).join("\n")
+      : "No common warning patterns detected.") +
+    "\n\nSafety advice:\n" +
+    data.advice.map(item => "• " + item).join("\n") +
+    "\n\nThis automated assessment is not proof of fraud or a guarantee of safety."
+  );
+}
+
+async function copyReport(data) {
+  try {
+    await navigator.clipboard.writeText(reportText(data));
+    showToast("Report copied");
+  } catch (error) {
+    showToast("Copy is unavailable in this browser");
+  }
+}
+
+async function shareReport(data) {
+  const content = reportText(data);
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: "TrustCheck Kenya report",
+        text: content
+      });
+    } catch (error) {
+      // The user may cancel the share window.
+    }
+  } else {
+    await copyReport(data);
+  }
+}
+
+/* Category selection */
+document.querySelectorAll(".category").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".category").forEach(item => {
+      item.classList.remove("active");
+    });
+
+    button.classList.add("active");
+    selected = button.dataset.category;
+  });
+});
+
+/* Character counter */
+document.getElementById("message").addEventListener("input", event => {
+  document.getElementById("charCount").textContent =
+    event.target.value.length;
+});
+
+/* Load sample messages */
+document.querySelectorAll("[data-sample]").forEach(button => {
+  button.addEventListener("click", () => {
+    const kind = button.dataset.sample;
+
+    selected = kind;
+
+    document.querySelectorAll(".category").forEach(item => {
+      item.classList.toggle("active", item.dataset.category === kind);
+    });
+
+    document.getElementById("message").value = samples[kind];
+    document.getElementById("charCount").textContent = samples[kind].length;
+    document.getElementById("result").classList.remove("show");
+
+    showToast("Example loaded. Tap Check for warning signs.");
+  });
+});
+
+/* Run assessment */
+document.getElementById("checkBtn").addEventListener("click", () => {
+  const message = document.getElementById("message").value.trim();
+
+  if (!message) {
+    showToast("Paste a message first");
+    return;
   }
 
+  if (message.length < 5) {
+    showToast("Please enter more content to assess");
+    return;
+  }
+
+  const data = analyse(message, selected);
+
+  renderResult(data);
+
+  saveHistory({
+    category: categoryNames[selected],
+    level: data.level,
+    preview: message.slice(0, 65),
+    date: new Date().toLocaleString()
+  });
+
+  document.getElementById("result").scrollIntoView({
+    behavior: "smooth",
+    block: "nearest"
+  });
+});
+
+/* Clear checker */
+document.getElementById("clearBtn").addEventListener("click", () => {
+  document.getElementById("message").value = "";
+  document.getElementById("charCount").textContent = "0";
+  document.getElementById("result").classList.remove("show");
+  showToast("Checker cleared");
+});
+
+/* Clear history */
+document.getElementById("clearHistory").addEventListener("click", () => {
+  if (confirm("Clear the check history saved on this device?")) {
+    localStorage.removeItem("tc_history");
+    renderHistory();
+    showToast("History cleared");
+  }
+});
+
+/* Language toggle */
+document.getElementById("languageBtn").addEventListener("click", () => {
+  swahili = !swahili;
+
+  document.getElementById("languageBtn").textContent =
+    swahili ? "English" : "Kiswahili";
+
+  document.getElementById("heroTitle").innerHTML =
+    swahili
+      ? "Fikiri kabla ya <span>kuamini.</span>"
+      : "Think before <span>you trust.</span>";
+
+  document.getElementById("heroText").textContent = swahili
+    ? "Kagua ujumbe unaotiliwa shaka, maombi ya M-Pesa, maduka ya mtandaoni, viungo na matangazo ya kazi kabla ya kuchukua hatua."
+    : "Check suspicious messages, M-Pesa requests, online shops, links and job offers before you take action.";
+
+  document.getElementById("scanHeading").textContent =
+    swahili ? "🔎 Kagua jambo linalotia shaka" : "🔎 Check something suspicious";
+
+  document.getElementById("scanDescription").textContent =
+    swahili
+      ? "Chagua aina, bandika ujumbe na uanze ukaguzi."
+      : "Choose a category, paste the suspicious content and start your assessment.";
+
+  document.getElementById("pasteLabel").textContent =
+    swahili ? "Bandika ujumbe hapa" : "Paste the message or content here";
+
+  document.getElementById("checkBtn").textContent =
+    swahili ? "🔍 ANGALIA ISHARA ZA HATARI" : "🔍 CHECK FOR WARNING SIGNS";
+});
+
+/* Initial history display */
+renderHistory();
+</script>
+
+<script>
+/* =========================
+   SUPABASE COMMUNITY WATCH
+========================= */
+
+(() => {
+  const SUPABASE_URL =
+    "https://ktqpjkxbrgtobqwmorkl.supabase.co";
+
+  const SUPABASE_KEY =
+    "sb_publishable_1e6pcjBpG6XJcGIyf6bHvg_f_BfXl2o";
+
+  const el = id => document.getElementById(id);
+
+  function showMessage(id, message) {
+    const target = el(id);
+    if (target) target.textContent = message;
+  }
+
+  if (!window.supabase || !window.supabase.createClient) {
+    showMessage(
+      "tc-submit-status",
+      "Connection library could not load. Please refresh the page."
+    );
+    showMessage(
+      "tc-admin-status",
+      "Connection library could not load. Please refresh the page."
+    );
+    return;
+  }
+
+  const db = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+  /* Cloudflare Turnstile */
+  let turnstileWidgetId = null;
+
+  if (window.turnstile) {
+    try {
+      turnstileWidgetId = window.turnstile.render("#tc-turnstile", {
+        sitekey: "0x4AAAAAAF1Vu643ymmpbijV",
+        theme: "dark"
+      });
+    } catch (error) {
+      showMessage(
+        "tc-submit-status",
+        "Security check could not load. Please refresh the page."
+      );
+    }
+  } else {
+    showMessage(
+      "tc-submit-status",
+      "Security check could not load. Please refresh the page."
+    );
+  }
+
+  function resetTurnstile() {
+    if (window.turnstile && turnstileWidgetId !== null) {
+      try {
+        window.turnstile.reset(turnstileWidgetId);
+      } catch (error) {
+        // A failed reset should not break the rest of the page.
+      }
+    }
+  }
+
+  /* Load approved community warnings */
   async function loadApprovedReports() {
     const list = el("tc-approved-list");
     list.textContent = "Loading approved warnings...";
 
     const { data, error } = await db
-  .from("community_warnings")
-  .select("id,category,description,created_at")
-  .order("created_at", { ascending: false })
-  .limit(30);
+      .from("community_warnings")
+      .select("id,category,description,created_at")
+      .order("created_at", { ascending: false })
+      .limit(30);
 
     if (error) {
       list.textContent = "Unable to load warnings. Please try again.";
@@ -634,57 +1229,125 @@ renderHistory();
 
     data.forEach(report => {
       const card = document.createElement("article");
-      card.style.cssText =
-        "padding:14px;margin:12px 0;background:#26364b;border-radius:10px;";
+      card.className = "community-warning";
 
       const heading = document.createElement("strong");
-      heading.textContent = report.category.replace("_", " ").toUpperCase();
+      heading.textContent =
+        String(report.category || "Other").replace(/_/g, " ").toUpperCase();
 
       const description = document.createElement("p");
-      description.textContent = report.description;
+      description.textContent = report.description || "";
 
       const date = document.createElement("small");
-      date.textContent = new Date(report.created_at).toLocaleDateString();
+      date.textContent = report.created_at
+        ? new Date(report.created_at).toLocaleDateString()
+        : "";
 
       card.append(heading, description, date);
       list.appendChild(card);
     });
   }
 
+  /* Submit a community report */
   el("tc-report-form").addEventListener("submit", async event => {
     event.preventDefault();
 
-    const button = event.submitter;
+    const form = el("tc-report-form");
+    const button = form.querySelector('button[type="submit"]');
+
+    if (!button) return;
+
     button.disabled = true;
-    showMessage("tc-submit-status", "Submitting your report...");
 
-    const report = {
-      category: el("tc-category").value,
-      description: el("tc-description").value.trim(),
-      suspicious_phone: el("tc-phone").value.trim() || null,
-      suspicious_link: el("tc-link").value.trim() || null,
-      status: "pending"
-    };
+    showMessage(
+      "tc-submit-status",
+      "Checking security and submitting..."
+    );
 
-    if (report.description.length < 10) {
-      showMessage("tc-submit-status", "Please provide at least 10 characters.");
+    try {
+      const token =
+        window.turnstile && turnstileWidgetId !== null
+          ? window.turnstile.getResponse(turnstileWidgetId)
+          : "";
+
+      if (!token) {
+        showMessage(
+          "tc-submit-status",
+          "Please complete the security check first."
+        );
+        return;
+      }
+
+      const report = {
+        category: el("tc-category").value,
+        description: el("tc-description").value.trim(),
+        suspicious_phone: el("tc-phone").value.trim() || null,
+        suspicious_link: el("tc-link").value.trim() || null,
+        token: token
+      };
+
+      const allowedCategories = [
+        "mpesa",
+        "job",
+        "online_shop",
+        "phishing",
+        "investment",
+        "other"
+      ];
+
+      if (!allowedCategories.includes(report.category)) {
+        showMessage(
+          "tc-submit-status",
+          "Please choose a valid report category."
+        );
+        return;
+      }
+
+      if (
+        report.description.length < 10 ||
+        report.description.length > 3000
+      ) {
+        showMessage(
+          "tc-submit-status",
+          "Description must be between 10 and 3000 characters."
+        );
+        return;
+      }
+
+      const { data, error } = await db.functions.invoke(
+        "trustcheck-report",
+        { body: report }
+      );
+
+      if (error || !data || !data.success) {
+        showMessage(
+          "tc-submit-status",
+          data?.error ||
+          error?.message ||
+          "Report submission failed. Please try again."
+        );
+        return;
+      }
+
+      form.reset();
+
+      showMessage(
+        "tc-submit-status",
+        "Report received. It is awaiting administrator review."
+      );
+
+    } catch (error) {
+      showMessage(
+        "tc-submit-status",
+        "Connection error. Please try again."
+      );
+    } finally {
+      resetTurnstile();
       button.disabled = false;
-      return;
     }
-
-    const { error } = await db.from("community_reports").insert(report);
-
-    if (error) {
-      showMessage("tc-submit-status", "Report submission failed. Please try again.");
-    } else {
-      el("tc-report-form").reset();
-      showMessage("tc-submit-status",
-        "Report received. It is awaiting administrator review.");
-    }
-
-    button.disabled = false;
   });
 
+  /* Load pending reports for verified administrators */
   async function loadPendingReports() {
     const list = el("tc-pending-list");
     list.textContent = "Loading pending reports...";
@@ -709,21 +1372,23 @@ renderHistory();
 
     data.forEach(report => {
       const card = document.createElement("div");
-      card.style.cssText =
-        "padding:15px;margin:14px 0;background:#26364b;border-radius:10px;";
+      card.className = "community-warning";
 
       const heading = document.createElement("h4");
-      heading.textContent = report.category.toUpperCase();
+      heading.textContent =
+        String(report.category || "Other").replace(/_/g, " ").toUpperCase();
 
       const details = document.createElement("p");
+      details.style.whiteSpace = "pre-wrap";
       details.textContent =
-        "Submitted description: " + report.description +
+        "Submitted description: " + (report.description || "") +
         "\nPhone: " + (report.suspicious_phone || "Not provided") +
         "\nLink: " + (report.suspicious_link || "Not provided");
 
       const edit = document.createElement("textarea");
-      edit.value = report.description;
+      edit.value = report.description || "";
       edit.maxLength = 5000;
+      edit.setAttribute("aria-label", "Edit report before approval");
       edit.style.cssText =
         "width:100%;min-height:100px;padding:10px;box-sizing:border-box;";
 
@@ -734,53 +1399,76 @@ renderHistory();
 
       const reject = document.createElement("button");
       reject.textContent = "Reject report";
+      reject.className = "danger-button";
       reject.style.cssText =
         "padding:10px;margin:8px 0;background:#a33;color:white;border:0;border-radius:7px;";
 
       approve.addEventListener("click", async () => {
         const cleaned = edit.value.trim();
+
         if (cleaned.length < 10) {
           alert("The edited warning must contain at least 10 characters.");
           return;
         }
 
-        approve.disabled = true;
-        const { error } = await db.from("community_reports")
-          .update({
-            description: cleaned,
-            suspicious_phone: null,
-            suspicious_link: null,
-            status: "approved"
-          })
-          .eq("id", report.id)
-          .eq("status", "pending");
-
-        if (error) {
-          alert("Approval failed. Please try again.");
-          approve.disabled = false;
+        if (cleaned.length > 3000) {
+          alert("The edited warning cannot exceed 3000 characters.");
           return;
         }
 
-        loadPendingReports();
-        loadApprovedReports();
+        approve.disabled = true;
+
+        try {
+          const { error: updateError } = await db
+            .from("community_reports")
+            .update({
+              description: cleaned,
+              suspicious_phone: null,
+              suspicious_link: null,
+              status: "approved"
+            })
+            .eq("id", report.id)
+            .eq("status", "pending");
+
+          if (updateError) {
+            alert("Approval failed. Please try again.");
+            approve.disabled = false;
+            return;
+          }
+
+          await loadPendingReports();
+          await loadApprovedReports();
+
+        } catch (error) {
+          alert("Connection error while approving the report.");
+          approve.disabled = false;
+        }
       });
 
       reject.addEventListener("click", async () => {
         if (!confirm("Reject this report?")) return;
+
         reject.disabled = true;
 
-        const { error } = await db.from("community_reports")
-          .update({ status: "rejected" })
-          .eq("id", report.id)
-          .eq("status", "pending");
+        try {
+          const { error: updateError } = await db
+            .from("community_reports")
+            .update({ status: "rejected" })
+            .eq("id", report.id)
+            .eq("status", "pending");
 
-        if (error) {
-          alert("Rejection failed. Please try again.");
+          if (updateError) {
+            alert("Rejection failed. Please try again.");
+            reject.disabled = false;
+            return;
+          }
+
+          await loadPendingReports();
+
+        } catch (error) {
+          alert("Connection error while rejecting the report.");
           reject.disabled = false;
-          return;
         }
-
-        loadPendingReports();
       });
 
       card.append(heading, details, edit, approve, reject);
@@ -788,10 +1476,14 @@ renderHistory();
     });
   }
 
+  /* Verify administrator access */
   async function checkAdmin() {
-    const { data: { user } } = await db.auth.getUser();
+    const { data: userData, error: userError } =
+      await db.auth.getUser();
 
-    if (!user) {
+    const user = userData?.user;
+
+    if (userError || !user) {
       showMessage("tc-admin-status", "Please sign in.");
       el("tc-pending-list").replaceChildren();
       el("tc-admin-logout").hidden = true;
@@ -801,44 +1493,110 @@ renderHistory();
     const { data, error } = await db.rpc("is_trustcheck_admin");
 
     if (error || data !== true) {
-      showMessage("tc-admin-status", "This account does not have administrator access.");
+      showMessage(
+        "tc-admin-status",
+        "This account does not have administrator access."
+      );
+
       await db.auth.signOut();
+      el("tc-pending-list").replaceChildren();
+      el("tc-admin-logout").hidden = true;
       return;
     }
 
-    showMessage("tc-admin-status", "Administrator verified. Review reports below.");
+    showMessage(
+      "tc-admin-status",
+      "Administrator verified. Review reports below."
+    );
+
     el("tc-admin-logout").hidden = false;
+
     await loadPendingReports();
   }
 
+  /* Administrator login */
   el("tc-admin-login").addEventListener("submit", async event => {
     event.preventDefault();
+
+    const button = el("tc-admin-login").querySelector('button[type="submit"]');
+
+    if (button) button.disabled = true;
+
     showMessage("tc-admin-status", "Signing in...");
 
-    const { error } = await db.auth.signInWithPassword({
-      email: el("tc-admin-email").value.trim(),
-      password: el("tc-admin-password").value
-    });
+    try {
+      const { error } = await db.auth.signInWithPassword({
+        email: el("tc-admin-email").value.trim(),
+        password: el("tc-admin-password").value
+      });
 
-    if (error) {
-      showMessage("tc-admin-status", "Sign-in failed. Check your details and try again.");
-      return;
+      if (error) {
+        showMessage(
+          "tc-admin-status",
+          "Sign-in failed. Check your details and try again."
+        );
+        return;
+      }
+
+      el("tc-admin-password").value = "";
+      await checkAdmin();
+
+    } catch (error) {
+      showMessage(
+        "tc-admin-status",
+        "Connection error. Please try again."
+      );
+    } finally {
+      if (button) button.disabled = false;
     }
-
-    el("tc-admin-password").value = "";
-    await checkAdmin();
   });
 
+  /* Administrator logout */
   el("tc-admin-logout").addEventListener("click", async () => {
-    await db.auth.signOut();
-    el("tc-pending-list").replaceChildren();
-    showMessage("tc-admin-status", "Signed out.");
-    el("tc-admin-logout").hidden = true;
+    const button = el("tc-admin-logout");
+    button.disabled = true;
+
+    try {
+      await db.auth.signOut();
+
+      el("tc-pending-list").replaceChildren();
+
+      showMessage("tc-admin-status", "Signed out.");
+      button.hidden = true;
+
+    } catch (error) {
+      showMessage(
+        "tc-admin-status",
+        "Could not sign out. Please try again."
+      );
+    } finally {
+      button.disabled = false;
+    }
   });
 
+  /* Refresh approved warnings */
   el("tc-refresh").addEventListener("click", loadApprovedReports);
 
-  loadApprovedReports();
+  /* Restore an existing administrator session, if present */
+  async function initialiseCommunityWatch() {
+    await loadApprovedReports();
+
+    try {
+      const { data } = await db.auth.getSession();
+
+      if (data?.session) {
+        await checkAdmin();
+      }
+    } catch (error) {
+      showMessage(
+        "tc-admin-status",
+        "Could not check the existing administrator session."
+      );
+    }
+  }
+
+  initialiseCommunityWatch();
+
 })();
 </script>
 
