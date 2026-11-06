@@ -776,46 +776,6 @@ const advice = {
   ]
 };
 
-function analyse(text, category) {
-  const t = text.toLowerCase();
-  const flags = [];
-
-  const add = (condition, message) => {
-    if (condition) flags.push(message);
-  };
-
-  add(
-    /\b(pin|otp|one.time.password|verification code|password|passcode|security code)\b/.test(t) &&
-    /\b(send|share|give|provide|enter|reply|confirm|tell|submit|need|asking|requests?)\b/.test(t),
-    "The message requests sensitive account information or verification codes."
-  );
-
-  add(
-    /\b(registration|activation|processing|application|training|recruitment|joining)\s+(fee|fees|payment|charge)\b/.test(t) ||
-    /\b(pay|send|deposit)\b.{0,45}\b(fee|activate|registration|job|position|training)\b/.test(t),
-    "The message asks for an upfront fee connected to an opportunity or service."
-  );
-
-  add(
-    /\b(guaranteed|guarantee|risk.free|no risk|sure income|daily income|earn)\b/.test(t) &&
-    /\b(ksh|kes|shillings|daily|weekly|monthly|profit|income|salary)\b/.test(t),
-    "The offer makes unusually attractive or guaranteed earning claims."
-  );
-
-  add(
-    /\b(urgent|immediately|right now|act now|limited time|last chance|today only|hurry|blocked today|expires today)\b/.test(t),
-    "The message uses urgency or pressure to make you act quickly."
-  );
-
-  add(
-    /\b(click here|tap here|verify now|claim your prize|winner|you have won|account suspended|account blocked)\b/.test(t),
-    "The message uses a prize, threat or account warning to prompt action."
-  );
-
-  add(
-    /\b(advance payment|pay before delivery|deposit before delivery|no refunds|send deposit)\b/.test(t),
-    "The seller requests advance payment or describes restrictive refund terms."
-  );
 
 
 function analyse(text, category) {
