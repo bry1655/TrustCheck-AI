@@ -1350,7 +1350,6 @@ renderHistory();
   }
 
   /* Load approved community warnings */
-    /* Load approved community warnings */
   async function loadApprovedReports() {
     const list = el("tc-approved-list");
 
@@ -1362,7 +1361,7 @@ renderHistory();
 
     const { data, error } = await db
       .from("community_warnings")
-      .select("id,category,description,created_at")
+      .select("id,category,description,suspicious_phone,suspicious_link,created_at")
       .order("created_at", { ascending: false })
       .limit(30);
 
@@ -1388,14 +1387,36 @@ renderHistory();
 
       const heading = document.createElement("strong");
       heading.className = "community-warning-category";
-      heading.textContent =
-        String(report.category || "Other")
-          .replace(/_/g, " ")
-          .toUpperCase();
+      heading.textContent = String(report.category || "Other")
+        .replace(/_/g, " ")
+        .toUpperCase();
 
       const description = document.createElement("p");
       description.className = "community-warning-description";
-      description.textContent = report.description || "No description provided.";
+      description.textContent =
+        report.description || "No description provided.";
+
+      card.append(heading, description);
+
+      if (report.suspicious_phone) {
+        const phone = document.createElement("p");
+        phone.className = "community-warning-phone";
+
+        const digits = String(report.suspicious_phone).replace(/\D/g, "");
+        const masked = digits.length > 4
+          ? "••••••" + digits.slice(-4)
+          : "••••";
+
+        phone.textContent = "Reported phone: " + masked;
+        card.appendChild(phone);
+      }
+
+      if (report.suspicious_link) {
+        const link = document.createElement("p");
+        link.className = "community-warning-link";
+        link.textContent = "Reported website: " + report.suspicious_link;
+        card.appendChild(link);
+      }
 
       const date = document.createElement("small");
       date.className = "community-warning-date";
@@ -1408,7 +1429,7 @@ renderHistory();
       notice.textContent =
         "Community report reviewed by an administrator. Verify information independently before taking action.";
 
-      card.append(heading, description, date, notice);
+      card.append(date, notice);
       list.appendChild(card);
     });
   }
