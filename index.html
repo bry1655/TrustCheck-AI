@@ -1029,7 +1029,6 @@ function getHistory() {
     return [];
   }
 }
-
 function saveHistory(item) {
   try {
     const list = getHistory();
@@ -1040,6 +1039,13 @@ function saveHistory(item) {
     showToast("History could not be saved on this device.");
   }
 }
+
+function friendlyLevel(level) {
+  if (level === "HIGH RISK") return "LIKELY SCAM";
+  if (level === "NEEDS CAUTION") return "BE CAREFUL";
+  return "NO OBVIOUS WARNING SIGNS";
+}
+
 
 function renderHistory() {
   const list = getHistory();
@@ -1056,7 +1062,7 @@ function renderHistory() {
 
   historyEl.innerHTML = list.slice(0, 7).map(item => `
     <div class="history-entry">
-      <b>${escapeHTML(item.category)} · ${escapeHTML(item.level)}</b>
+      <b>${escapeHTML(item.category)} · ${escapeHTML(friendlyLevel(item.level))}</b>
       <p>${escapeHTML(item.preview)} · ${escapeHTML(item.date)}</p>
     </div>
   `).join("");
@@ -1081,7 +1087,7 @@ function renderResult(data) {
         : "No common warning patterns were detected. Continue to verify independently.";
 
   resultEl.innerHTML = `
-    <span class="risk ${cls}">${escapeHTML(data.level)}</span>
+    <span class="risk ${cls}">${escapeHTML(friendlyLevel(data.level))}</span>
 
     <h4>Assessment result</h4>
     <p>${resultDescription}</p>
@@ -1118,7 +1124,7 @@ function reportText(data) {
   return (
     "TRUSTCHECK KENYA — PRELIMINARY ASSESSMENT\n" +
     "Category: " + categoryNames[selected] + "\n" +
-    "Result: " + data.level + "\n\n" +
+    "Result: " + friendlyLevel(data.level) + "\n\n" +
     "Warning signs:\n" +
     (data.flags.length
       ? data.flags.map(item => "• " + item).join("\n")
