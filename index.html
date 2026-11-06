@@ -1198,8 +1198,9 @@ document.querySelectorAll("[data-sample]").forEach(button => {
   });
 });
 
-/* Run assessment */
-document.getElementById("checkBtn").addEventListener("click", () => {
+/* Run assessment with secure account and monthly-limit enforcement */
+document.getElementById("checkBtn").addEventListener("click", async () => {
+  const button = document.getElementById("checkBtn");
   const message = document.getElementById("message").value.trim();
 
   if (!message) {
@@ -1212,22 +1213,96 @@ document.getElementById("checkBtn").addEventListener("click", () => {
     return;
   }
 
-  const data = analyse(message, selected);
+  const account = window.tcSupabase;
 
-  renderResult(data);
+  if (!account) {
+    showToast("Account service unavailable. Refresh and try again.");
+    return;
+  }
 
-  saveHistory({
-    category: categoryNames[selected],
-    level: data.level,
-    preview: message.slice(0, 65),
-    date: new Date().toLocaleString()
-  });
+  button.disabled = true;
+  button.textContent = "Checking account...";
 
-  document.getElementById("result").scrollIntoView({
-    behavior: "smooth",
-    block: "nearest"
-  });
+  try {
+    const { data: userData, error: userError } =
+      await account.auth.getUser();
+
+    if (userError || !userData?.user) {
+      showToast("Please sign in before using the checker.");
+      document.getElementById("tc-account").scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+      return;
+    }
+
+    button.textContent = "Checking monthly allowance...";
+
+    const { data, error } = await account.rpc(
+      "consume_trustcheck_check"
+    );
+
+    if (error) {
+      console.error("Monthly usage error:", error);
+      showToast("Could not verify your allowance. Please try again.");
+      return;
+    }
+
+    if (!data || data.allowed !== true) {
+      if (data?.reason === "monthly_limit_reached") {
+        document.getElementById("tc-plan-status").textContent =
+          "Free plan — 3/3 checks used this month. Your allowance resets on " +
+          new Date(data.resets_at).toLocaleDateString();
+
+        showToast("Monthly free limit reached. Upgrade to Pro Shield.");
+
+        document.getElementById("tc-account").scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+      } else {
+        showToast("Please sign in to continue.");
+      }
+      return;
+    }
+
+    if (data.plan === "free") {
+      document.getElementById("tc-plan-status").textContent =
+        "Free plan — " + data.used + "/3 checks used this month. " +
+        data.remaining + " remaining. Resets " +
+        new Date(data.resets_at).toLocaleDateString();
+    }
+
+    button.textContent = "Analysing...";
+
+    const result = analyse(message, selected);
+
+    renderResult(result);
+
+    saveHistory({
+      category: categoryNames[selected],
+      level: result.level,
+      preview: message.slice(0, 65),
+      date: new Date().toLocaleString()
+    });
+
+    document.getElementById("result").scrollIntoView({
+      behavior: "smooth",
+      block: "nearest"
+    });
+
+  } catch (error) {
+    console.error("Check failed:", error);
+    showToast("Something went wrong. Please try again.");
+  } finally {
+    button.disabled = false;
+    button.textContent = swahili
+      ? "🔍 ANGALIA ISHARA ZA HATARI"
+      : "🔍 CHECK FOR WARNING SIGNS";
+  }
 });
+
+
 
 /* Clear checker */
 document.getElementById("clearBtn").addEventListener("click", () => {
