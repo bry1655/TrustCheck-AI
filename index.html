@@ -1819,7 +1819,8 @@ renderHistory();
   const SUPABASE_KEY = "sb_publishable_1e6pcjBpG6XJcGIyf6bHvg_f_BfXl2o";
 
   const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
+  
+window.tcSupabase = db;
   const get = id => document.getElementById(id);
   const show = (id, message) => {
     const element = get(id);
