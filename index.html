@@ -1350,9 +1350,15 @@ renderHistory();
   }
 
   /* Load approved community warnings */
+    /* Load approved community warnings */
   async function loadApprovedReports() {
     const list = el("tc-approved-list");
-    list.textContent = "Loading approved warnings...";
+
+    list.replaceChildren();
+
+    const loading = document.createElement("p");
+    loading.textContent = "Loading community warnings...";
+    list.appendChild(loading);
 
     const { data, error } = await db
       .from("community_warnings")
@@ -1360,15 +1366,19 @@ renderHistory();
       .order("created_at", { ascending: false })
       .limit(30);
 
+    list.replaceChildren();
+
     if (error) {
       list.textContent = "Unable to load warnings. Please try again.";
       return;
     }
 
-    list.replaceChildren();
-
     if (!data || data.length === 0) {
-      list.textContent = "No approved community warnings yet.";
+      const empty = document.createElement("p");
+      empty.className = "community-empty";
+      empty.textContent =
+        "No verified community warnings yet. Approved reports will appear here.";
+      list.appendChild(empty);
       return;
     }
 
@@ -1377,18 +1387,28 @@ renderHistory();
       card.className = "community-warning";
 
       const heading = document.createElement("strong");
+      heading.className = "community-warning-category";
       heading.textContent =
-        String(report.category || "Other").replace(/_/g, " ").toUpperCase();
+        String(report.category || "Other")
+          .replace(/_/g, " ")
+          .toUpperCase();
 
       const description = document.createElement("p");
-      description.textContent = report.description || "";
+      description.className = "community-warning-description";
+      description.textContent = report.description || "No description provided.";
 
       const date = document.createElement("small");
+      date.className = "community-warning-date";
       date.textContent = report.created_at
-        ? new Date(report.created_at).toLocaleDateString()
-        : "";
+        ? "Published: " + new Date(report.created_at).toLocaleDateString()
+        : "Publication date unavailable";
 
-      card.append(heading, description, date);
+      const notice = document.createElement("small");
+      notice.className = "community-warning-notice";
+      notice.textContent =
+        "Community report reviewed by an administrator. Verify information independently before taking action.";
+
+      card.append(heading, description, date, notice);
       list.appendChild(card);
     });
   }
