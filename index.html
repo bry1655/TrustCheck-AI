@@ -1608,11 +1608,9 @@ renderHistory();
           const { error: updateError } = await db
             .from("community_reports")
             .update({
-              description: cleaned,
-              suspicious_phone: null,
-              suspicious_link: null,
-              status: "approved"
-            })
+  description: cleaned,
+  status: "approved"
+})
             .eq("id", report.id)
             .eq("status", "pending");
 
