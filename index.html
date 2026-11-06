@@ -1894,7 +1894,13 @@ renderHistory();
 
     show("tc-auth-status", "Creating your account...");
 
-    const { data, error } = await db.auth.signUp({ email, password });
+    const { data, error } = await db.auth.signUp({
+  email,
+  password,
+  options: {
+    emailRedirectTo: "https://bry1655.github.io/TrustCheck-AI/"
+  }
+});
 
     if (error) {
       show("tc-auth-status", error.message);
