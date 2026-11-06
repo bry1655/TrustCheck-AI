@@ -1783,6 +1783,265 @@ renderHistory();
 
 })();
 </script>
+  
+<!-- TRUSTCHECK CUSTOMER ACCOUNT AND PRO PLANS -->
+<section id="tc-account" style="max-width:600px;margin:30px auto;padding:20px;background:#10243b;color:white;border-radius:16px;font-family:Arial,sans-serif">
+  <h2>TrustCheck Account</h2>
+  <p>Sign in or create an account to save your checks and access Pro Shield.</p>
 
+  <input id="tc-auth-email" type="email" placeholder="Email address"
+    style="width:100%;padding:13px;margin:7px 0;box-sizing:border-box">
+  <input id="tc-auth-password" type="password" placeholder="Password"
+    style="width:100%;padding:13px;margin:7px 0;box-sizing:border-box">
+
+  <button id="tc-signup" style="padding:12px;margin:5px">Create account</button>
+  <button id="tc-login" style="padding:12px;margin:5px">Sign in</button>
+  <button id="tc-logout" style="padding:12px;margin:5px" hidden>Sign out</button>
+
+  <p id="tc-auth-status" role="status">You are not signed in.</p>
+  <hr>
+  <h3>Your plan</h3>
+  <p id="tc-plan-status">Sign in to view your plan.</p>
+  <p>Free: 3 checks per calendar month.</p>
+  <p>Pro Monthly: KSh 199</p>
+  <p>Pro Yearly: KSh 1,499 (Save 37%)</p>
+
+  <input id="tc-mpesa-phone" type="tel" placeholder="M-Pesa number, e.g. 0712345678"
+    style="width:100%;padding:13px;margin:7px 0;box-sizing:border-box">
+  <button id="tc-buy-monthly" style="padding:12px;margin:5px">Pay KSh 199 monthly</button>
+  <button id="tc-buy-yearly" style="padding:12px;margin:5px">Pay KSh 1,499 yearly</button>
+  <p id="tc-payment-status" role="status"></p>
+  <small>Never enter your M-Pesa PIN in TrustCheck. Approve a payment only through the official Safaricom STK prompt.</small>
+</section>
+  <script>
+(() => {
+  const SUPABASE_URL = "https://ktqpjkxbrgtobqwmorkl.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_1e6pcjBpG6XJcGIyf6bHvg_f_BfXl2o";
+
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const get = id => document.getElementById(id);
+  const show = (id, message) => {
+    const element = get(id);
+    if (element) element.textContent = message;
+  };
+
+  let currentUser = null;
+
+  function updateAccountUI(user) {
+    currentUser = user;
+
+    if (user) {
+      show("tc-auth-status", "Signed in as " + user.email);
+      if (get("tc-signup")) get("tc-signup").hidden = true;
+      if (get("tc-login")) get("tc-login").hidden = true;
+      if (get("tc-logout")) get("tc-logout").hidden = false;
+    } else {
+      show("tc-auth-status", "Please sign in or create an account.");
+      show("tc-plan-status", "Sign in to view your plan.");
+      if (get("tc-signup")) get("tc-signup").hidden = false;
+      if (get("tc-login")) get("tc-login").hidden = false;
+      if (get("tc-logout")) get("tc-logout").hidden = true;
+    }
+  }
+
+  async function loadPlan(user) {
+    if (!user) return;
+
+    show("tc-plan-status", "Checking your subscription...");
+
+    const { data, error } = await db
+      .from("subscriptions")
+      .select("plan,status,expires_at")
+      .eq("user_id", user.id)
+      .eq("status", "active")
+      .gt("expires_at", new Date().toISOString())
+      .order("expires_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (error) {
+      show("tc-plan-status", "Unable to verify your plan. Please try again.");
+      console.error("Subscription check:", error);
+      return;
+    }
+
+    if (data) {
+      const planName = data.plan === "yearly" ? "Pro Yearly" : "Pro Monthly";
+      const expiry = new Date(data.expires_at).toLocaleDateString();
+      show("tc-plan-status", planName + " — active until " + expiry);
+    } else {
+      show(
+        "tc-plan-status",
+        "Free plan — 3 checks/month. Monthly usage enforcement still needs to be connected."
+      );
+    }
+  }
+
+  async function signUp() {
+    const email = get("tc-auth-email")?.value.trim();
+    const password = get("tc-auth-password")?.value;
+
+    if (!email || !password) {
+      show("tc-auth-status", "Enter your email and password.");
+      return;
+    }
+
+    if (password.length < 6) {
+      show("tc-auth-status", "Use a password with at least 6 characters.");
+      return;
+    }
+
+    show("tc-auth-status", "Creating your account...");
+
+    const { data, error } = await db.auth.signUp({ email, password });
+
+    if (error) {
+      show("tc-auth-status", error.message);
+      return;
+    }
+
+    if (data.session) {
+      updateAccountUI(data.user);
+      await loadPlan(data.user);
+    } else {
+      show(
+        "tc-auth-status",
+        "Account created. Check your email for the confirmation link, then sign in."
+      );
+    }
+  }
+
+  async function signIn() {
+    const email = get("tc-auth-email")?.value.trim();
+    const password = get("tc-auth-password")?.value;
+
+    if (!email || !password) {
+      show("tc-auth-status", "Enter your email and password.");
+      return;
+    }
+
+    show("tc-auth-status", "Signing in...");
+
+    const { data, error } = await db.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) {
+      show("tc-auth-status", error.message);
+      return;
+    }
+
+    updateAccountUI(data.user);
+    await loadPlan(data.user);
+  }
+
+  async function signOut() {
+    show("tc-auth-status", "Signing out...");
+
+    const { error } = await db.auth.signOut();
+
+    if (error) {
+      show("tc-auth-status", error.message);
+      return;
+    }
+
+    updateAccountUI(null);
+  }
+
+  function normalizePhone(value) {
+    let phone = value.replace(/\D/g, "");
+
+    if (phone.startsWith("0")) {
+      phone = "254" + phone.substring(1);
+    } else if (phone.startsWith("7") || phone.startsWith("1")) {
+      phone = "254" + phone;
+    }
+
+    return phone;
+  }
+
+  async function buyPlan(plan) {
+    if (!currentUser) {
+      show("tc-payment-status", "Please sign in before purchasing Pro.");
+      return;
+    }
+
+    const rawPhone = get("tc-mpesa-phone")?.value || "";
+    const phone = normalizePhone(rawPhone);
+
+    if (!/^254[17]\d{8}$/.test(phone)) {
+      show("tc-payment-status", "Enter a valid Kenyan M-Pesa number.");
+      return;
+    }
+
+    const amount = plan === "monthly" ? 199 : 1499;
+    show("tc-payment-status", "Requesting M-Pesa payment of KSh " + amount + "...");
+
+    const buttonId = plan === "monthly" ? "tc-buy-monthly" : "tc-buy-yearly";
+    const button = get(buttonId);
+    if (button) button.disabled = true;
+
+    try {
+      const { data, error } = await db.functions.invoke("mpesa-stk-push", {
+        body: {
+          phone: phone,
+          plan: plan
+        }
+      });
+
+      if (error) throw error;
+      if (data && data.error) throw new Error(data.error);
+      if (data && data.success === false) {
+        throw new Error(data.message || "The payment request was not accepted.");
+      }
+
+      show(
+        "tc-payment-status",
+        data?.message ||
+        "Payment request submitted. Check your phone for the official Safaricom STK prompt."
+      );
+
+      show(
+        "tc-plan-status",
+        "Waiting for confirmed payment. Your Pro plan activates only after payment verification."
+      );
+    } catch (error) {
+      show("tc-payment-status", error.message || "Payment request failed. Please try again.");
+    } finally {
+      if (button) button.disabled = false;
+    }
+  }
+
+  get("tc-signup")?.addEventListener("click", signUp);
+  get("tc-login")?.addEventListener("click", signIn);
+  get("tc-logout")?.addEventListener("click", signOut);
+
+  get("tc-buy-monthly")?.addEventListener("click", () => buyPlan("monthly"));
+  get("tc-buy-yearly")?.addEventListener("click", () => buyPlan("yearly"));
+
+  db.auth.onAuthStateChange((_event, session) => {
+    updateAccountUI(session?.user || null);
+
+    if (session?.user) {
+      loadPlan(session.user);
+    }
+  });
+
+  db.auth.getSession().then(({ data, error }) => {
+    if (error) {
+      show("tc-auth-status", "Unable to check your sign-in status.");
+      return;
+    }
+
+    updateAccountUI(data.session?.user || null);
+
+    if (data.session?.user) {
+      loadPlan(data.session.user);
+    }
+  });
+})();
+</script>
 </body>
 </html>
