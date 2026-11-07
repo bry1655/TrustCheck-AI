@@ -1988,10 +1988,10 @@ async function signUp() {
     if (data.session && data.user) {
       updateAccountUI(data.user);
       await loadPlan(data.user);
-    } else if (data.user) {
+        } else if (data.user) {
       show(
         "tc-auth-status",
-        "Registration accepted. Check your email for confirmation. If no email arrives, contact support."
+        "Supabase returned user ID: " + data.user.id
       );
     } else {
       show("tc-auth-status", "Registration returned no user. Please try again.");
