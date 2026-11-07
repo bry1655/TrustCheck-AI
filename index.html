@@ -1993,7 +1993,6 @@ async function loadPlan(user) {
   }
 }
   
-
 async function signUp() {
   const email = get("tc-auth-email")?.value.trim();
   const password = get("tc-auth-password")?.value;
@@ -2013,7 +2012,10 @@ async function signUp() {
   try {
     const { data, error } = await db.auth.signUp({
       email,
-      password
+      password,
+      options: {
+        emailRedirectTo: "https://bry1655.github.io/TrustCheck-AI/"
+      }
     });
 
     if (error) {
@@ -2024,21 +2026,21 @@ async function signUp() {
     if (data.session && data.user) {
       updateAccountUI(data.user);
       await loadPlan(data.user);
-      } else if (data.user) {
-  show(
-    "tc-auth-status",
-    "User ID: " + data.user.id +
-    " | Identities: " + (data.user.identities?.length ?? "unknown")
-  );
+      show("tc-auth-status", "Your account is ready. Welcome to TrustCheck Kenya!");
+    } else if (data.user) {
+      show(
+        "tc-auth-status",
+        "Registration request received. Check your Inbox and Spam for the verification email. Confirm your email before signing in."
+      );
     } else {
-      show("tc-auth-status", "Registration returned no user. Please try again.");
+      show("tc-auth-status", "We could not complete registration. Please try again.");
     }
 
   } catch (err) {
-    show("tc-auth-status", "Connection error: " + err.message);
+    show("tc-auth-status", "Connection error. Please try again.");
+    console.error("Signup error:", err);
   }
 }
-
     
 function authRedirectUrl() {
   return window.location.origin + window.location.pathname;
