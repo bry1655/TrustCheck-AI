@@ -1970,13 +1970,12 @@ window.tcSupabase = db;
 
     show("tc-auth-status", "Creating your account...");
 
-    const { data, error } = await db.auth.signUp({
+    
+const { data, error } = await db.auth.signUp({
   email,
-  password,
-  options: {
-    emailRedirectTo: "https://bry1655.github.io/TrustCheck-AI/"
-  }
+  password
 });
+
 
     if (error) {
       show("tc-auth-status", error.message);
@@ -1986,13 +1985,15 @@ window.tcSupabase = db;
     if (data.session) {
       updateAccountUI(data.user);
       await loadPlan(data.user);
-    } else {
+        } else {
       show(
         "tc-auth-status",
-        "Account created. Check your email for the confirmation link, then sign in."
+        "Account created. Please check your email and click the confirmation link before signing in."
       );
     }
-  }
+  
+
+    
 
   async function signIn() {
     const email = get("tc-auth-email")?.value.trim();
