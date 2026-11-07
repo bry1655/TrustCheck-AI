@@ -1869,12 +1869,24 @@ renderHistory();
     style="width:100%;padding:13px;margin:7px 0;box-sizing:border-box">
   <input id="tc-auth-password" type="password" placeholder="Password"
     style="width:100%;padding:13px;margin:7px 0;box-sizing:border-box">
+<button id="tc-signup" style="padding:12px;margin:5px">Create account</button>
+<button id="tc-login" style="padding:12px;margin:5px">Sign in</button>
+<button id="tc-resend-verification" style="padding:12px;margin:5px">Resend verification email</button>
+<button id="tc-forgot-password" style="padding:12px;margin:5px">Forgot password?</button>
+<button id="tc-logout" style="padding:12px;margin:5px" hidden>Sign out</button>
 
-  <button id="tc-signup" style="padding:12px;margin:5px">Create account</button>
-  <button id="tc-login" style="padding:12px;margin:5px">Sign in</button>
-  <button id="tc-logout" style="padding:12px;margin:5px" hidden>Sign out</button>
+<div id="tc-password-reset" hidden style="margin-top:12px;padding:14px;background:#18344d;border-radius:10px">
+  <input id="tc-new-password" type="password" minlength="6"
+    placeholder="Enter your new password"
+    autocomplete="new-password"
+    style="width:100%;padding:13px;margin:7px 0;box-sizing:border-box">
+  <button id="tc-save-new-password" type="button" style="padding:12px;margin:5px">
+    Save new password
+  </button>
+</div>
 
-  <p id="tc-auth-status" role="status">You are not signed in.</p>
+<p id="tc-auth-status" role="status">You are not signed in.</p>
+
   <hr>
   <h3>Your plan</h3>
   <p id="tc-plan-status">Sign in to view your plan.</p>
@@ -2028,7 +2040,81 @@ async function signUp() {
 }
 
     
+function authRedirectUrl() {
+  return window.location.origin + window.location.pathname;
+}
 
+async function resendVerification() {
+  const email = get("tc-auth-email")?.value.trim();
+
+  if (!email) {
+    show("tc-auth-status", "Enter your email address first.");
+    return;
+  }
+
+  show("tc-auth-status", "Sending verification email...");
+
+  const { error } = await db.auth.resend({
+    type: "signup",
+    email,
+    options: {
+      emailRedirectTo: authRedirectUrl()
+    }
+  });
+
+  if (error) {
+    show("tc-auth-status", "Resend error: " + error.message);
+    return;
+  }
+
+  show("tc-auth-status", "If verification is still needed, check your Inbox and Spam.");
+}
+
+async function forgotPassword() {
+  const email = get("tc-auth-email")?.value.trim();
+
+  if (!email) {
+    show("tc-auth-status", "Enter your email address first.");
+    return;
+  }
+
+  show("tc-auth-status", "Sending password reset email...");
+
+  const { error } = await db.auth.resetPasswordForEmail(email, {
+    redirectTo: authRedirectUrl()
+  });
+
+  if (error) {
+    show("tc-auth-status", "Password reset error: " + error.message);
+    return;
+  }
+
+  show("tc-auth-status", "If an account exists, check your Inbox and Spam for a reset link.");
+}
+
+async function saveNewPassword() {
+  const password = get("tc-new-password")?.value;
+
+  if (!password || password.length < 6) {
+    show("tc-auth-status", "Enter a new password with at least 6 characters.");
+    return;
+  }
+
+  const { error } = await db.auth.updateUser({ password });
+
+  if (error) {
+    show("tc-auth-status", "Password update error: " + error.message);
+    return;
+  }
+
+  const resetBox = get("tc-password-reset");
+  if (resetBox) resetBox.hidden = true;
+
+  const passwordInput = get("tc-new-password");
+  if (passwordInput) passwordInput.value = "";
+
+  show("tc-auth-status", "Password updated successfully.");
+}
   async function signIn() {
     const email = get("tc-auth-email")?.value.trim();
     const password = get("tc-auth-password")?.value;
@@ -2132,20 +2218,30 @@ async function signUp() {
   }
 
   get("tc-signup")?.addEventListener("click", signUp);
-  get("tc-login")?.addEventListener("click", signIn);
-  get("tc-logout")?.addEventListener("click", signOut);
+get("tc-login")?.addEventListener("click", signIn);
+get("tc-logout")?.addEventListener("click", signOut);
+
+get("tc-resend-verification")?.addEventListener("click", resendVerification);
+get("tc-forgot-password")?.addEventListener("click", forgotPassword);
+get("tc-save-new-password")?.addEventListener("click", saveNewPassword);
 
   get("tc-buy-monthly")?.addEventListener("click", () => buyPlan("monthly"));
   get("tc-buy-yearly")?.addEventListener("click", () => buyPlan("yearly"));
 
-  db.auth.onAuthStateChange((_event, session) => {
-    updateAccountUI(session?.user || null);
+db.auth.onAuthStateChange((event, session) => {
+  updateAccountUI(session?.user || null);
 
-    if (session?.user) {
-      loadPlan(session.user);
-    }
-  });
+  if (event === "PASSWORD_RECOVERY") {
+    const resetBox = get("tc-password-reset");
+    if (resetBox) resetBox.hidden = false;
 
+    show("tc-auth-status", "Enter your new password below.");
+  }
+
+  if (session?.user) {
+    loadPlan(session.user);
+  }
+});
   db.auth.getSession().then(({ data, error }) => {
     if (error) {
       show("tc-auth-status", "Unable to check your sign-in status.");
