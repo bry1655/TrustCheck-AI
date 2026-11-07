@@ -1988,11 +1988,12 @@ async function signUp() {
     if (data.session && data.user) {
       updateAccountUI(data.user);
       await loadPlan(data.user);
-        } else if (data.user) {
-      show(
-        "tc-auth-status",
-        "Supabase returned user ID: " + data.user.id
-      );
+      } else if (data.user) {
+  show(
+    "tc-auth-status",
+    "User ID: " + data.user.id +
+    " | Identities: " + (data.user.identities?.length ?? "unknown")
+  );
     } else {
       show("tc-auth-status", "Registration returned no user. Please try again.");
     }
