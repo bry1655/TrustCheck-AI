@@ -2046,31 +2046,7 @@ function authRedirectUrl() {
   return window.location.origin + window.location.pathname;
 }
 
-async function resendVerification() {
-  const email = get("tc-auth-email")?.value.trim();
 
-  if (!email) {
-    show("tc-auth-status", "Enter your email address first.");
-    return;
-  }
-
-  show("tc-auth-status", "Sending verification email...");
-
-  const { error } = await db.auth.resend({
-    type: "signup",
-    email,
-    options: {
-      emailRedirectTo: authRedirectUrl()
-    }
-  });
-
-  if (error) {
-    show("tc-auth-status", "Resend error: " + error.message);
-    return;
-  }
-
-  show("tc-auth-status", "If verification is still needed, check your Inbox and Spam.");
-}
 
 async function forgotPassword() {
   const email = get("tc-auth-email")?.value.trim();
@@ -2092,6 +2068,41 @@ async function forgotPassword() {
   }
 
   show("tc-auth-status", "If an account exists, check your Inbox and Spam for a reset link.");
+}
+  async function resendVerification() {
+  const email = get("tc-auth-email")?.value.trim();
+
+  if (!email) {
+    show("tc-auth-status", "Enter your email address first.");
+    return;
+  }
+
+  show("tc-auth-status", "Sending verification email...");
+
+  try {
+    const { data, error } = await db.auth.resend({
+      type: "signup",
+      email: email,
+      options: {
+        emailRedirectTo: "https://bry1655.github.io/TrustCheck-AI/"
+      }
+    });
+
+    if (error) {
+      console.error("Verification resend error:", error);
+      show("tc-auth-status", "Email error: " + error.message);
+      return;
+    }
+
+    show(
+      "tc-auth-status",
+      "Request submitted. Check Inbox and Spam. If no email arrives, check your email delivery logs."
+    );
+
+  } catch (err) {
+    console.error("Resend error:", err);
+    show("tc-auth-status", "Connection error. Please try again.");
+  }
 }
 
 async function saveNewPassword() {
