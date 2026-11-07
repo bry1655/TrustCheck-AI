@@ -1956,44 +1956,51 @@ renderHistory();
     }
   }
 
-  async function signUp() {
-    const email = get("tc-auth-email")?.value.trim();
-    const password = get("tc-auth-password")?.value;
+  
 
-    if (!email || !password) {
-      show("tc-auth-status", "Enter your email and password.");
-      return;
-    }
+async function signUp() {
+  const email = get("tc-auth-email")?.value.trim();
+  const password = get("tc-auth-password")?.value;
 
-    if (password.length < 6) {
-      show("tc-auth-status", "Use a password with at least 6 characters.");
-      return;
-    }
+  if (!email || !password) {
+    show("tc-auth-status", "Enter your email and password.");
+    return;
+  }
 
-    show("tc-auth-status", "Creating your account...");
+  if (password.length < 6) {
+    show("tc-auth-status", "Use a password with at least 6 characters.");
+    return;
+  }
 
-    
-const { data, error } = await db.auth.signUp({
-  email,
-  password
-});
+  show("tc-auth-status", "Creating your account...");
 
+  try {
+    const { data, error } = await db.auth.signUp({
+      email,
+      password
+    });
 
     if (error) {
-      show("tc-auth-status", error.message);
+      show("tc-auth-status", "Sign-up error: " + error.message);
       return;
     }
 
-    if (data.session) {
+    if (data.session && data.user) {
       updateAccountUI(data.user);
       await loadPlan(data.user);
-        } else {
+    } else if (data.user) {
       show(
         "tc-auth-status",
-        "Account created. Please check your email and click the confirmation link before signing in."
+        "Registration accepted. Check your email for confirmation. If no email arrives, contact support."
       );
+    } else {
+      show("tc-auth-status", "Registration returned no user. Please try again.");
     }
-    }
+
+  } catch (err) {
+    show("tc-auth-status", "Connection error: " + err.message);
+  }
+}
 
     
 
