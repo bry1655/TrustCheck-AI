@@ -1935,8 +1935,12 @@ renderHistory();
     }
   }
 
+
 async function loadPlan(user) {
   if (!user) return;
+
+  const limitAlert = get("tc-limit-alert");
+  if (limitAlert) limitAlert.hidden = true;
 
   show("tc-plan-status", "Checking your subscription...");
 
@@ -1984,6 +1988,15 @@ async function loadPlan(user) {
       ? new Date(usage.resets_at).toLocaleDateString()
       : "the 1st of next month";
 
+    if (limitAlert) {
+      limitAlert.hidden = remaining > 0;
+
+      if (remaining <= 0) {
+        const resetLabel = limitAlert.querySelector("[data-reset-date]");
+        if (resetLabel) resetLabel.textContent = resetDate;
+      }
+    }
+
     show(
       "tc-plan-status",
       "Free plan — " + used + "/" + limit +
@@ -1992,8 +2005,6 @@ async function loadPlan(user) {
     );
   }
 }
-  
-
 
 
 async function signUp() {
