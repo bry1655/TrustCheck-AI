@@ -1254,13 +1254,25 @@ document.getElementById("checkBtn").addEventListener("click", async () => {
         document.getElementById("tc-plan-status").textContent =
           "Free plan — 3/3 checks used this month. Your allowance resets on " +
           new Date(data.resets_at).toLocaleDateString();
+const limitAlert = document.getElementById("tc-limit-alert");
 
-        showToast("Monthly free limit reached. Upgrade to Pro Shield.");
+if (limitAlert) {
+  limitAlert.hidden = false;
 
-        document.getElementById("tc-account").scrollIntoView({
-          behavior: "smooth",
-          block: "center"
-        });
+  const resetLabel = limitAlert.querySelector("[data-reset-date]");
+  if (resetLabel && data.resets_at) {
+    resetLabel.textContent =
+      new Date(data.resets_at).toLocaleDateString();
+  }
+}
+
+showToast("You've reached your free monthly limit. Upgrade to Pro Shield to continue.");
+
+document.getElementById("tc-account").scrollIntoView({
+  behavior: "smooth",
+  block: "center"
+});
+        
       } else {
         showToast("Please sign in to continue.");
       }
