@@ -1993,6 +1993,9 @@ async function loadPlan(user) {
   }
 }
   
+
+
+
 async function signUp() {
   const email = get("tc-auth-email")?.value.trim();
   const password = get("tc-auth-password")?.value;
@@ -2027,26 +2030,34 @@ async function signUp() {
       updateAccountUI(data.user);
       await loadPlan(data.user);
       show("tc-auth-status", "Your account is ready. Welcome to TrustCheck Kenya!");
-    } else if (data.user) {
-      show(
-        "tc-auth-status",
-        "Registration request received. Check your Inbox and Spam for the verification email. Confirm your email before signing in."
-      );
-    } else {
-      show("tc-auth-status", "We could not complete registration. Please try again.");
+      return;
     }
 
+    if (
+      data.user &&
+      Array.isArray(data.user.identities) &&
+      data.user.identities.length === 0
+    ) {
+      show("tc-auth-status", "This email may already have an account. Use Resend Verification to request another email.");
+      return;
+    }
+
+    if (data.user) {
+      show("tc-auth-status", "Registration accepted by Supabase. Check Inbox and Spam. Email delivery is not yet confirmed.");
+      return;
+    }
+
+    show("tc-auth-status", "No user was returned by Supabase. Please try again.");
+
   } catch (err) {
-    show("tc-auth-status", "Connection error. Please try again.");
     console.error("Signup error:", err);
+    show("tc-auth-status", "Signup connection error: " + (err.message || "Unknown error"));
   }
 }
-    
+
 function authRedirectUrl() {
   return window.location.origin + window.location.pathname;
 }
-
-
 
 async function forgotPassword() {
   const email = get("tc-auth-email")?.value.trim();
@@ -2058,18 +2069,24 @@ async function forgotPassword() {
 
   show("tc-auth-status", "Sending password reset email...");
 
-  const { error } = await db.auth.resetPasswordForEmail(email, {
-    redirectTo: authRedirectUrl()
-  });
+  try {
+    const { error } = await db.auth.resetPasswordForEmail(email, {
+      redirectTo: authRedirectUrl()
+    });
 
-  if (error) {
-    show("tc-auth-status", "Password reset error: " + error.message);
-    return;
+    if (error) {
+      show("tc-auth-status", "Password reset error: " + error.message);
+      return;
+    }
+
+    show("tc-auth-status", "If an account exists, check your Inbox and Spam for a reset link.");
+
+  } catch (err) {
+    show("tc-auth-status", "Connection error: " + (err.message || "Unknown error"));
   }
-
-  show("tc-auth-status", "If an account exists, check your Inbox and Spam for a reset link.");
 }
-  async function resendVerification() {
+
+async function resendVerification() {
   const email = get("tc-auth-email")?.value.trim();
 
   if (!email) {
@@ -2077,33 +2094,36 @@ async function forgotPassword() {
     return;
   }
 
-  show("tc-auth-status", "Sending verification email...");
+  show("tc-auth-status", "Requesting verification email...");
 
   try {
     const { data, error } = await db.auth.resend({
       type: "signup",
-      email: email,
+      email,
       options: {
         emailRedirectTo: "https://bry1655.github.io/TrustCheck-AI/"
       }
     });
 
     if (error) {
-      console.error("Verification resend error:", error);
-      show("tc-auth-status", "Email error: " + error.message);
+      console.error("Resend error:", error);
+      show("tc-auth-status", "Verification error: " + error.message);
       return;
     }
 
+    console.log("Supabase resend response:", data);
+
     show(
       "tc-auth-status",
-      "Request submitted. Check Inbox and Spam. If no email arrives, check your email delivery logs."
+      "Supabase accepted the resend request. This does not guarantee delivery. Check Brevo Transactional Logs for a new confirmation email."
     );
 
   } catch (err) {
     console.error("Resend error:", err);
-    show("tc-auth-status", "Connection error. Please try again.");
+    show("tc-auth-status", "Resend connection error: " + (err.message || "Unknown error"));
   }
 }
+
 
 async function saveNewPassword() {
   const password = get("tc-new-password")?.value;
@@ -2129,16 +2149,17 @@ async function saveNewPassword() {
   show("tc-auth-status", "Password updated successfully.");
 }
   async function signIn() {
-    const email = get("tc-auth-email")?.value.trim();
-    const password = get("tc-auth-password")?.value;
+  const email = get("tc-auth-email")?.value.trim();
+  const password = get("tc-auth-password")?.value;
 
-    if (!email || !password) {
-      show("tc-auth-status", "Enter your email and password.");
-      return;
-    }
+  if (!email || !password) {
+    show("tc-auth-status", "Enter your email and password.");
+    return;
+  }
 
-    show("tc-auth-status", "Signing in...");
+  show("tc-auth-status", "Signing in...");
 
+  try {
     const { data, error } = await db.auth.signInWithPassword({
       email,
       password
@@ -2151,7 +2172,13 @@ async function saveNewPassword() {
 
     updateAccountUI(data.user);
     await loadPlan(data.user);
+
+    show("tc-auth-status", "Successfully signed in.");
+  } catch (err) {
+    console.error("Sign-in error:", err);
+    show("tc-auth-status", "Connection error: " + (err.message || "Please try again."));
   }
+}
 
   async function signOut() {
     show("tc-auth-status", "Signing out...");
