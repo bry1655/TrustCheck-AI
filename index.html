@@ -854,7 +854,9 @@ function analyse(text, category) {
     /\b(pay|send|deposit)\b.{0,65}\b(fee|activate|registration|job|position|training)\b/.test(t);
 
   const urgency =
-    /\b(urgent|immediately|right now|act now|limited time|last chance|today only|hurry|expires today|within \d+ minutes?)\b/.test(t);
+
+const urgency =
+  /\b(urgent|urgently|immediately|right now|act now|act immediately|pay now|pay today|limited time|limited slots?|few slots remaining|slots? available|last chance|today only|hurry|expires today|offer expires|offer ends today|don't miss out|do not miss out|within \d+ minutes?|final warning|deadline today)\b/i.test(t);
 
   const guaranteedIncome =
     /\b(guaranteed|guarantee|risk.free|no risk|sure income|daily income|earn)\b/.test(t) &&
